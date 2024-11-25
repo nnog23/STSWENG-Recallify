@@ -1,5 +1,4 @@
 import { Router } from 'express';
-
 import Card from '../models/Card.js';
 
 const cardsRouter = Router();
@@ -46,3 +45,7 @@ cardsRouter.put('/cards/:cardId', async (req, res) => {
         res.status(400).json({ error: 'Failed to update card.', details: err.message });
     }
 });
+
+
+// Export the router
+export default cardsRouter;

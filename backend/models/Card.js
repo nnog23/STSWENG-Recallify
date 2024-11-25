@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const cardSchema = new mongoose.Schema({
     cardId: {
@@ -47,4 +47,4 @@ const cardSchema = new mongoose.Schema({
 
 const Card = mongoose.model('Card', cardSchema);
 
-module.exports = Card;
+export default Card;

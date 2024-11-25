@@ -1,8 +1,9 @@
-import router from "./src/routes/indexRouter.js";
+import router from './routes/indexRouter.js';
 
-require('dotenv').config()
+import dotenv from 'dotenv';
+dotenv.config();
 
-const express = require('express')
+import express from 'express';
 
 const app = express()
 

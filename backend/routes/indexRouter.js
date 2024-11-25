@@ -1,6 +1,5 @@
 import { Router } from 'express';
-import cardsRouter from './newsRouter.js';
-
+import cardsRouter from './cardsRouter.js';
 
 const router = Router();
 
@@ -23,4 +22,4 @@ router.use(cardsRouter);
 
 
 // Export the router
-export default router;
+export default router;;
