@@ -1,10 +1,7 @@
 import { Router } from 'express';
 import cardsRouter from './cardsRouter.js';
 
-
 const router = Router();
-
-
 
 router.get("/home", (req, res) => {
     res.redirect("/");
