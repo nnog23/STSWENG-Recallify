@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import cardsRouter from './cardsRouter.js';
+const { Router } = require('express');
+const cardsRouter = require('./cardsRouter.js');
 
 const router = Router();
 
@@ -13,5 +13,4 @@ router.get("/homepage", (req, res) => {
 
 router.use(cardsRouter);
 
-
-export default router;
+module.exports = router;

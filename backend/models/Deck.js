@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const deckSchema = new mongoose.Schema({
     deckId: {
@@ -32,4 +32,4 @@ const deckSchema = new mongoose.Schema({
 
 const Deck = mongoose.model('Deck', deckSchema);
 
-export default Deck;
+module.exports = Deck;

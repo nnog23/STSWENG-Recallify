@@ -1,6 +1,6 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import router from './routes/indexRouter.js';
+const express = require('express');
+const dotenv = require('dotenv');
+const router = require('./routes/indexRouter.js');
 
 dotenv.config();
 
@@ -12,11 +12,10 @@ app.get('/', (req, res) => {
     res.send('Server is running!');
 });
 
-
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
 });
 
 app.use(router);
 
-export default app;
+module.exports = app;
