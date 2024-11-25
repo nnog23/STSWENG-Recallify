@@ -8,6 +8,10 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
+app.use((req, res) => {
+    res.status(404).send('404: Route not found.');
+});
+
 app.get('/', (req, res) => {
     res.send('Server is running!');
 });
