@@ -1,10 +1,10 @@
-import router from "./src/routes/indexRouter.js";
+const express = require('express');
+const dotenv = require('dotenv');
+const router = require('./routes/indexRouter.js');
 
-require('dotenv').config()
+dotenv.config();
 
-const express = require('express')
-
-const app = express()
+const app = express();
 
 const PORT = process.env.PORT || 3000;
 
@@ -12,9 +12,15 @@ app.get('/', (req, res) => {
     res.send('Server is running!');
 });
 
+app.use((req, res) => {
+    res.status(404).send('404: Route not found.');
+});
+
+
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
 });
 
 app.use(router);
 
+module.exports = app;

@@ -1,6 +1,5 @@
-import { Router } from 'express';
-
-import Card from '../models/Card.js';
+const { Router } = require('express');
+const Card = require('../models/Card.js');
 
 const cardsRouter = Router();
 
@@ -15,7 +14,6 @@ cardsRouter.post('/cards', async (req, res) => {
         res.status(400).json({ error: 'Failed to add card.', details: err.message });
     }
 });
-
 
 cardsRouter.delete('/cards/:cardId', async (req, res) => {
     const { cardId } = req.params;
@@ -36,7 +34,6 @@ cardsRouter.put('/cards/:cardId', async (req, res) => {
     const updateData = req.body;
 
     try {
-        
         const updatedCard = await Card.findOneAndUpdate({ cardId }, updateData, { new: true });
         if (!updatedCard) {
             return res.status(404).json({ error: 'Card not found.' });
@@ -46,3 +43,6 @@ cardsRouter.put('/cards/:cardId', async (req, res) => {
         res.status(400).json({ error: 'Failed to update card.', details: err.message });
     }
 });
+
+
+module.exports = cardsRouter;
