@@ -1,36 +1,51 @@
 // FRONT-END JS For Adding cards
 const submitBtn = document.querySelector("#addCard");
 const confirmeditBtn = document.querySelector('#confirmeditCard');
-const addCardForm = document.forms.addCardForm;
+const addCardForm = document.querySelector('#addCardForm');
 const editCardForm = document.forms.editCardForm;
 
 submitBtn?.addEventListener("click", async (e) => {
-
     e.preventDefault();
-    const formData = new FormData(addCardForm);
 
+    // Select the form fields directly from the form object
+    const front = addCardForm?.front.value.trim();
+    const back = addCardForm?.back.value.trim();
+
+    if (!front || !back) {
+        alert("Both fields must be filled out.");
+        return;
+    }
+
+    console.log(front, back);  // Check if values are correctly logged
+
+    // Create an object with the form data to send as JSON
+    const formObject = {
+        front: front,
+        back: back,
+    };
 
     try {
-        const response = await fetch("/cards", {
-
+        const response = await fetch("http://localhost:8000/cards", {
             method: 'POST',
-            body: formData
-
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formObject),  // Send the form data as JSON
         });
-        
-        console.log(response);
-        if (response.status === 200) {
-            // Check for redirect
-            if (response.redirected) {
-                window.location.href = response.url;
-            } else {
-                location.reload();
-            }
+
+        const data = await response.json();  // Parse the JSON response
+
+        if (response.status === 201) {
+            alert("Card added successfully!");
+            location.reload();  // Reload the page to reflect changes
         } else {
             console.log("Status code received: " + response.status);
+            alert("Failed to add card: " + (data.error || data.details));
         }
+        
     } catch (err) {
         console.error(err);
+        alert("An error occurred while adding the card.");
     }
 });
 

@@ -4,18 +4,30 @@ const Card = require('../models/Card.js');
 const cardsRouter = Router();
 
 cardsRouter.post('/cards', async (req, res) => {
-    const { cardId, deckId, front, back } = req.body;
+
+    console.log("Received request to add card");
+    
+    // const { cardId, deckId, front, back } = req.body;
+
+        const { front, back } = req.body;
+
+        console.log(req.body);
+
+   
+
+        deckId = 1;
 
     try {
-        const newCard = new Card({ cardId, deckId, front, back });
+        const newCard = new Card({ deckId, front, back });
         const savedCard = await newCard.save();
         res.status(201).json({ message: 'Card added successfully.', card: savedCard });
     } catch (err) {
+        console.log('Error adding card:', err);
         res.status(400).json({ error: 'Failed to add card.', details: err.message });
     }
 });
 
-cardsRouter.delete('/cards/:cardId', async (req, res) => {
+cardsRouter.delete('/cards/:cardid', async (req, res) => {
     const { cardId } = req.params;
 
     try {
@@ -29,7 +41,7 @@ cardsRouter.delete('/cards/:cardId', async (req, res) => {
     }
 });
 
-cardsRouter.put('/cards/:cardId', async (req, res) => {
+cardsRouter.put('/cards/:cardid', async (req, res) => {
     const { cardId } = req.params;
     const updateData = req.body;
 

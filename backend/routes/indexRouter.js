@@ -3,6 +3,7 @@ const cardsRouter = require('./cardsRouter.js');
 
 const router = Router();
 
+
 router.get("/home", (req, res) => {
     res.redirect("/");
 });
