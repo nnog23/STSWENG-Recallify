@@ -3,8 +3,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // pages and components
 
 import Home from "./pages/Home";
-import Test from "./pages/Test";
 import Navbar from "./components/Navbar";
+import Browse from "./pages/Browse";
+import Deckview from "./pages/Deckview";
 import AddCard from "./pages/AddCard";
 import AddDeck from "./pages/AddDeck";
 
@@ -18,8 +19,11 @@ function App() {
 					<Routes>
 						<Route path="/" element={<Home />} />
 						<Route path="/home" element={<Home />} />
+						<Route path="/browse" element={<Browse />} />
+						<Route path="/deckview" element={<Deckview />} />
 						<Route path="/addcard" element={<AddCard />} />
-						<Route path="/adddeck" element={<AddDeck />} />
+            <Route path="/adddeck" element={<AddDeck />} />
+
 					</Routes>
 				</div>
 			</BrowserRouter>

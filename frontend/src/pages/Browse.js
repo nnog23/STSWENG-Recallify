@@ -1,12 +1,20 @@
-import { Link } from "react-router-dom";
+import Searchbar from "../components/Searchbar";
 
-export default function Home() {
+export default function Browse() {
 	return (
 		<>
+			<div className="mt-10 mb-6">
+				<Searchbar />
+			</div>
+
 			<div className="flex flex-col items-center justify-center min-h-screen">
-				<h1 className="text-4xl mt-7 mb-6 font-bold text-blue-950">Decks</h1>
-				<div className="w-9/12 grid grid-cols-4 grid-rows-[auto_1fr_auto_auto] gap-x-5 gap-y-5">
-					{Array.from({ length: 8 }).map((_, index) => {
+				<div className="w-9/12 flex flex-row items-start justify-start">
+					<h1 className="pl-3 text-4xl mb-6 font-bold text-blue-950 text-left">
+						Browse Decks
+					</h1>
+				</div>
+				<div className="w-9/12 grid grid-cols-4 grid-rows-[auto_1fr_auto_auto_auto] gap-x-5 gap-y-5">
+					{Array.from({ length: 12 }).map((_, index) => {
 						// Generate a random number between 100 and 200
 						const randomNumber = Math.floor(Math.random() * 101) + 100;
 
@@ -16,10 +24,12 @@ export default function Home() {
 						// Generate the repeated "Item" string
 						const itemText = Array(randomRepeatCount).fill("Item").join(" ");
 
+						const itemOwner = "Owner's Name";
+
 						return (
 							<div
 								key={index}
-								className="relative bg-blue-500 p-4 rounded-2xl shadow-md grid grid-rows-subgrid row-span-4 border-8 border-blue-200 "
+								className="relative bg-blue-500 p-4 rounded-2xl shadow-md grid grid-rows-subgrid row-span-5 border-8 border-blue-200 "
 							>
 								{/* Overlapping Bubble Badge */}
 								<div className="absolute -top-3 -right-3 bg-yellow-300 text-white text-s font-bold py-1 px-2 rounded-full shadow-lg">
@@ -36,7 +46,7 @@ export default function Home() {
 									/>
 								</div>
 
-								{/* Name */}
+								{/* Deck Name */}
 								<div className="text-white text-xl font-semibold text-center">
 									{itemText}
 								</div>
@@ -46,6 +56,17 @@ export default function Home() {
 									{Array.from({ length: Math.floor(Math.random() * 10) + 5 })
 										.map(() => "word")
 										.join(" ") + "."}
+								</div>
+
+								{/* Owner Name */}
+								<div className="text-white text-sm text-center mt-auto font-semibold flex items-center justify-center">
+									{/* Owner's Icon */}
+									<img
+										alt="Owner Icon"
+										src="https://bluemoji.io/cdn-proxy/646218c67da47160c64a84d5/66b3e9ea16121c4a0759ffbb_53.png"
+										className="h-8 w-8 rounded-full mr-2 border-2"
+									/>
+									{itemOwner}
 								</div>
 
 								{/* Date */}
@@ -61,37 +82,7 @@ export default function Home() {
 					})}
 				</div>
 			</div>
-			<div className="flex justify-center">
-					<Link
-					to="/addcard"
-					className="bg-blue-500 text-white text-xl font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition"
-					>
-					Add Card
-					</Link>
-			</div>
-
-			<div className="flex justify-center">
-					<Link
-					to="/adddeck"
-					className="bg-blue-500 text-white text-xl font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition"
-					>
-					Add Deck
-					</Link>
-			</div>
-
-			<div className=" h-60 flex flex-col items-center justify-center pt-10">
-				<div className="w-10/12 bg-yellow-400 h-40 rounded-tr-3xl rounded-tl-3xl flex items-center justify-center">
-					<p className="text-white text-3xl font-bold text-center">Heat Map</p>
-				</div>
-				<div className="bg-slate-100 w-10/12  h-40 flex items-center justify-center gap-10">
-					<p className="text-blue-950 text-lg font-semibold text-center">
-						Daily Average:
-					</p>
-					<p className="text-blue-950 text-lg font-semibold text-center">
-						Current Streak:
-					</p>
-				</div>
-			</div>
+			<div className="h-40"></div>
 		</>
 	);
 }
