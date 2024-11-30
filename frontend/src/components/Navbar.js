@@ -17,16 +17,21 @@ import {
 } from "@heroicons/react/24/outline";
 
 const navigation = [
-	{ name: "Home", href: "#", current: false, icon: HomeIcon },
-	{ name: "Browse", href: "#", current: false, icon: MagnifyingGlassIcon },
-	{ name: "Profile", href: "#", current: false, icon: UserCircleIcon },
+	{ name: "Home", href: "/home", current: false, icon: HomeIcon },
+	{
+		name: "Browse",
+		href: "/browse",
+		current: false,
+		icon: MagnifyingGlassIcon,
+	},
+	{ name: "Profile", href: "/profile", current: false, icon: UserCircleIcon },
 ];
 
 function classNames(...classes) {
 	return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
+export default function Navbar() {
 	return (
 		<Disclosure as="nav" className="bg-white shadow-md">
 			<div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">

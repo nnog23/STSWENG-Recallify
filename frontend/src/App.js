@@ -3,8 +3,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // pages and components
 
 import Home from "./pages/Home";
-import Test from "./pages/Test";
 import Navbar from "./components/Navbar";
+import Browse from "./pages/Browse";
+import Deckview from "./pages/Deckview";
 
 function App() {
 	return (
@@ -15,6 +16,8 @@ function App() {
 					<Routes>
 						<Route path="/" element={<Home />} />
 						<Route path="/home" element={<Home />} />
+						<Route path="/browse" element={<Browse />} />
+						<Route path="/deckview" element={<Deckview />} />
 					</Routes>
 				</div>
 			</BrowserRouter>
