@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const cardsRouter = require('./cardsRouter.js');
+const decksRouter = require('./decksRouter.js');
 
 const router = Router();
 
@@ -13,5 +14,6 @@ router.get("/homepage", (req, res) => {
 });
 
 router.use(cardsRouter);
+router.use(decksRouter);
 
 module.exports = router;

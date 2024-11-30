@@ -7,6 +7,8 @@ import Navbar from "./components/Navbar";
 import Browse from "./pages/Browse";
 import Deckview from "./pages/Deckview";
 import AddCard from "./pages/AddCard";
+import AddDeck from "./pages/AddDeck";
+
 
 function App() {
 	return (
@@ -20,6 +22,7 @@ function App() {
 						<Route path="/browse" element={<Browse />} />
 						<Route path="/deckview" element={<Deckview />} />
 						<Route path="/addcard" element={<AddCard />} />
+            <Route path="/adddeck" element={<AddDeck />} />
 
 					</Routes>
 				</div>
