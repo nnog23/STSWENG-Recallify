@@ -61,10 +61,24 @@ export default function Home() {
 					})}
 				</div>
 			</div>
-			<Link
+			<div className="flex justify-center">
+					<Link
 					to="/addcard"
 					className="bg-blue-500 text-white text-xl font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition"
-				> Add Card </Link>
+					>
+					Add Card
+					</Link>
+			</div>
+
+			<div className="flex justify-center">
+					<Link
+					to="/adddeck"
+					className="bg-blue-500 text-white text-xl font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition"
+					>
+					Add Deck
+					</Link>
+			</div>
+
 			<div className=" h-60 flex flex-col items-center justify-center pt-10">
 				<div className="w-10/12 bg-yellow-200 h-40 rounded-tr-3xl rounded-tl-3xl flex items-center justify-center">
 					<p className="text-white text-3xl font-bold text-center">Heat Map</p>

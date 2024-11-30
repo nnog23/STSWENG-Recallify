@@ -6,6 +6,8 @@ import Home from "./pages/Home";
 import Test from "./pages/Test";
 import Navbar from "./components/Navbar";
 import AddCard from "./pages/AddCard";
+import AddDeck from "./pages/AddDeck";
+
 
 function App() {
 	return (
@@ -17,6 +19,7 @@ function App() {
 						<Route path="/" element={<Home />} />
 						<Route path="/home" element={<Home />} />
 						<Route path="/addcard" element={<AddCard />} />
+						<Route path="/adddeck" element={<AddDeck />} />
 					</Routes>
 				</div>
 			</BrowserRouter>
