@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const cardSchema = new mongoose.Schema({
     deckId: {
-        type: Number,
+        type: String,
         required: true,
     },
     front: {

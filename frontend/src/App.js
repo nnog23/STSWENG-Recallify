@@ -11,7 +11,10 @@ import AddDeck from "./pages/AddDeck";
 import Cardlist from "./pages/Cardlist";
 import Review from "./pages/Review";
 import Quiz from "./pages/Quiz";
+import Login from "./pages/Login";
+import Profile from "./pages/Profile";
 
+import Home2 from "./pages/Home2";
 function App() {
 	return (
 		<div className="App">
@@ -22,13 +25,17 @@ function App() {
 						<Route path="/" element={<Home />} />
 						<Route path="/home" element={<Home />} />
 						<Route path="/browse" element={<Browse />} />
-						<Route path="/addcard" element={<AddCard />} />
+						<Route path="/users/:userId/decks/:deckId/cards" element={<AddCard />} />
 						{""}
-						<Route path="/deckview" element={<Deckview />} />
-						<Route path="/cardlist" element={<Cardlist />} />
-						<Route path="/adddeck" element={<AddDeck />} />
+						<Route path="/users/:userId/decks/:deckId" element={<Deckview />} />
+						<Route path="/users/:userId/decks/:deckId/cards/cardlist" element={<Cardlist />} />
+						<Route path="/users/:userId/decks/adddeck" element={<AddDeck />} />
 						<Route path="/review" element={<Review />} />
 						<Route path="/quiz" element={<Quiz />} />
+						<Route path="/login" element={<Login/>} />
+						<Route path="/profile" element={<Profile />} />
+						<Route path="/users/:userId/decks/decklist" element={<Home2 />} />
+
 					</Routes>
 				</div>
 			</BrowserRouter>

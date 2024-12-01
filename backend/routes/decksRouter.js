@@ -4,26 +4,27 @@ const Deck = require('../models/Deck.js');
 const decksRouter = Router();
 
 
-decksRouter.post('/decks', async (req, res) => {
+decksRouter.post('/users/:userId/decks/adddeck', async (req, res) => {
     console.log("Received request to add a new deck");
 
-   // const { deckId, userId, title, description, private } = req.body; (if users are implemented this would work)
+    const { title, description, private, userId } = req.body;  
+    
 
-   const {title, description, private } = req.body;
-
-   deckId = 1000000000;
-   userId = 1000000000;
+    console.log(userId);
 
     try {
+     
         const newDeck = new Deck({
-            deckId,
             userId,
             title,
             description,
             private,
         });
 
+        // Save the new deck to the database
         const savedDeck = await newDeck.save();
+
+        // Send a success response with the saved deck data
         res.status(201).json({ message: 'Deck added successfully.', deck: savedDeck });
     } catch (err) {
         console.error('Error adding deck:', err);
@@ -69,15 +70,43 @@ decksRouter.put('/decks/:deckId', async (req, res) => {
 
 // retrieve all decks
 
-decksRouter.get('/user/:userId/decks', async (req, res) => {
+decksRouter.get('/users/:userId/decks/decklist', async (req, res) => {
+
+    console.log(req.params);
     const { userId } = req.params;
 
     try {
+        console.log(userId);
+
         const userDecks = await Deck.find({ userId });
+        console.log(userDecks);
         res.status(200).json({ message: 'User decks retrieved successfully.', decks: userDecks });
     } catch (err) {
         console.error('Error retrieving decks:', err);
         res.status(500).json({ error: 'Failed to fetch decks.', details: err.message });
+    }
+});
+
+decksRouter.get('/users/:userId/decks/:deckId', async (req, res) => {
+    
+    console.log(req.params);
+    const { userId, deckId } = req.params;
+
+    try {
+        console.log(`Fetching deck for userId: ${userId}, deckId: ${deckId}`);
+
+        // Query to find the specific deck by userId and deckId
+        const deck = await Deck.findOne({ userId, _id: deckId });
+
+        if (!deck) {
+            return res.status(404).json({ message: 'Deck not found.' });
+        }
+
+        console.log(deck);
+        res.status(200).json({ message: 'Deck retrieved successfully.', deck });
+    } catch (err) {
+        console.error('Error retrieving deck:', err);
+        res.status(500).json({ error: 'Failed to fetch the deck.', details: err.message });
     }
 });
 
