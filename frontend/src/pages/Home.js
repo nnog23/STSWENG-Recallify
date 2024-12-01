@@ -1,9 +1,18 @@
 import { Link } from "react-router-dom";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
 export default function Home() {
 	return (
 		<>
 			<div className="flex flex-col items-center justify-center min-h-screen">
+				{/* Add Button */}
+				<a
+					href="/adddeck"
+					className="absolute right-48 top-24 text-gray-700 hover:bg-blue-950 hover:text-white rounded-3xl px-3 py-2 text-sm font-medium bg-white shadow-md flex items-center justify-center"
+				>
+					<PlusCircleIcon className="h-5 w-5 mr-2" aria-hidden="true" />
+					Add Deck
+				</a>
 				<h1 className="text-4xl mt-7 mb-6 font-bold text-blue-950">Decks</h1>
 				<div className="w-9/12 grid grid-cols-4 grid-rows-[auto_1fr_auto_auto] gap-x-5 gap-y-5">
 					{Array.from({ length: 8 }).map((_, index) => {
@@ -60,23 +69,6 @@ export default function Home() {
 						);
 					})}
 				</div>
-			</div>
-			<div className="flex justify-center">
-					<Link
-					to="/addcard"
-					className="bg-blue-500 text-white text-xl font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition"
-					>
-					Add Card
-					</Link>
-			</div>
-
-			<div className="flex justify-center">
-					<Link
-					to="/adddeck"
-					className="bg-blue-500 text-white text-xl font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition"
-					>
-					Add Deck
-					</Link>
 			</div>
 
 			<div className=" h-60 flex flex-col items-center justify-center pt-10">

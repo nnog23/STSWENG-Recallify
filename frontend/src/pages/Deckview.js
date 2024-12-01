@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
 	HomeIcon,
 	UserCircleIcon,
@@ -6,23 +7,25 @@ import {
 	PencilSquareIcon,
 	BookOpenIcon,
 	RectangleStackIcon,
+	PlusCircleIcon,
 } from "@heroicons/react/24/outline";
 
 const navigation = [
+	{ name: "Add Card", href: "/addcard", current: false, icon: PlusCircleIcon },
 	{ name: "Share", href: "#", current: false, icon: ShareIcon },
 	{
 		name: "Edit",
-		href: "#",
+		href: "/cardlist",
 		current: false,
 		icon: PencilSquareIcon,
 	},
 	{
 		name: "Review",
-		href: "#",
+		href: "/review",
 		current: false,
 		icon: RectangleStackIcon,
 	},
-	{ name: "Quiz", href: "#", current: false, icon: BookOpenIcon },
+	{ name: "Quiz", href: "/quiz", current: false, icon: BookOpenIcon },
 ];
 
 // Generate a random number between 1 and 10 for repetition
@@ -51,6 +54,7 @@ export default function Deckview() {
 						.map(() => "word")
 						.join(" ") + "."}
 				</div>
+
 				{navigation.map((item) => (
 					<a
 						key={item.name}
