@@ -157,7 +157,7 @@ const Cardtable = () => {
 					onClick={closePreview}
 				>
 					<div
-						className="bg-white p-6 rounded-lg shadow-lg w-1/3 max-w-sm"
+						className="bg-white p-6 rounded-lg shadow-lg w-1/3 max-w-lg"
 						onClick={(e) => e.stopPropagation()} // Prevent click from closing modal
 					>
 						<div className="flex justify-between">
