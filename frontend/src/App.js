@@ -11,6 +11,8 @@ import AddDeck from "./pages/AddDeck";
 import Cardlist from "./pages/Cardlist";
 import Review from "./pages/Review";
 import Quiz from "./pages/Quiz";
+import Login from "./pages/Login";
+import Profile from "./pages/Profile";
 
 function App() {
 	return (
@@ -29,6 +31,8 @@ function App() {
 						<Route path="/adddeck" element={<AddDeck />} />
 						<Route path="/review" element={<Review />} />
 						<Route path="/quiz" element={<Quiz />} />
+						<Route path="/login" element={<Login/>} />
+						<Route path="/profile" element={<Profile />} />
 					</Routes>
 				</div>
 			</BrowserRouter>
