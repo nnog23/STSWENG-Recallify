@@ -1,6 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
 
 export default function Login() {
+  const navigate = useNavigate(); // Replacing useHistory with useNavigate
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     username: "",
@@ -30,7 +32,7 @@ export default function Login() {
     const payload = isLogin
       ? { email: formData.email, password: formData.password }
       : { username: formData.username, email: formData.email, password: formData.password };
-    
+
     try {
       const response = await fetch(url, {
         method: "POST",
@@ -42,9 +44,17 @@ export default function Login() {
 
       const data = await response.json();
 
+      console.log(data);
       if (response.ok) {
         setSuccess(data.message); // Assuming the API sends a success message
         setError(""); // Clear any previous errors
+
+        // Redirect to a new page after successful login/signup
+        if (isLogin) {
+          // Assuming the response contains the user ID or other relevant data
+          const userId = data.userId; // Adjust based on actual response
+          navigate(`/users/${userId}/decks/decklist`); // Redirect to the user dashboard
+        }
       } else {
         setError(data.message); // Assuming the API sends an error message
         setSuccess(""); // Clear success message

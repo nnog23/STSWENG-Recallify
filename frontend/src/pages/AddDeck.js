@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 
 const AddDeck = () => {
 	// State to track form input values
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
 	const [isPrivate, setIsPrivate] = useState(false);
+
+	const { userId } = useParams();
 
 	// Handle input changes
 	const handleInputChange = (e) => {
@@ -31,10 +34,11 @@ const AddDeck = () => {
 			title,
 			description,
 			private: isPrivate,
+			userId: userId
 		};
 
 		try {
-			const response = await fetch("http://localhost:8000/decks", {
+			const response = await fetch("http://localhost:8000/users/:userId/decks/adddeck", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

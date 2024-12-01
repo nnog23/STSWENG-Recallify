@@ -1,10 +1,10 @@
 const { Router } = require('express');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const User = require('../models/User.js');
 
 const usersRouter = Router();
 
+// Signup Route
 usersRouter.post('/signup', async (req, res) => {
     const { username, email, password } = req.body;
 
@@ -14,7 +14,7 @@ usersRouter.post('/signup', async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ error: 'Username or email already exists' });
         }
-
+        
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -47,16 +47,52 @@ usersRouter.post('/login', async (req, res) => {
             return res.status(400).json({ error: 'Invalid username or password' });
         }
 
-        // Create a JWT token
-        const token = jwt.sign({ userId: user._id, username: user.username }, 'your_jwt_secret', { expiresIn: '1h' });
+        // Store user information in session
+        req.session.user = { userId: user._id, username: user.username };  // Store user in session
 
-        // Send response with the token
-        res.status(200).json({ message: 'Login successful', token });
+        // Send response with the userId
+        res.status(200).json({ message: 'Login successful', userId: user._id });
     } catch (err) {
         console.error('Error during login:', err);
         res.status(500).json({ error: 'Server error during login' });
     }
 });
 
+// Logout Route
+usersRouter.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ error: 'Failed to logout' });
+        }
+        res.status(200).json({ message: 'Logged out successfully' });
+    });
+});
+
+
+usersRouter.get('/user/:userId/decks', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        // Find the user by their ID
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Fetch the user's decks, assuming the Deck model has a `userId` field
+        const decks = await Deck.find({ userId: user._id }); // This assumes you have a userId field in the Deck model
+
+        if (decks.length === 0) {
+            return res.status(404).json({ message: 'No decks found for this user' });
+        }
+
+        // Send the decks in the response
+        res.status(200).json({ decks });
+    } catch (err) {
+        console.error('Error fetching decks:', err);
+        res.status(500).json({ error: 'Server error while fetching decks' });
+    }
+});
 
 module.exports = usersRouter;
+
