@@ -1,79 +1,94 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom"; // Use Link for navigation
 import {
-	HomeIcon,
-	UserCircleIcon,
-	MagnifyingGlassIcon,
-	ShareIcon,
-	PencilSquareIcon,
-	BookOpenIcon,
-	RectangleStackIcon,
-	PlusCircleIcon,
+  PlusCircleIcon,
+  ShareIcon,
+  PencilSquareIcon,
+  BookOpenIcon,
+  RectangleStackIcon,
 } from "@heroicons/react/24/outline";
 
-const navigation = [
-	{ name: "Add Card", href: "/addcard", current: false, icon: PlusCircleIcon },
-	{ name: "Share", href: "#", current: false, icon: ShareIcon },
-	{
-		name: "Edit",
-		href: "/cardlist",
-		current: false,
-		icon: PencilSquareIcon,
-	},
-	{
-		name: "Review",
-		href: "/review",
-		current: false,
-		icon: RectangleStackIcon,
-	},
-	{ name: "Quiz", href: "/quiz", current: false, icon: BookOpenIcon },
-];
-
-// Generate a random number between 1 and 10 for repetition
-const randomRepeatCount = Math.floor(Math.random() * 8) + 1;
-
-// Generate the repeated "Item" string
-const itemText = Array(randomRepeatCount).fill("Item").join(" ");
-
-function classNames(...classes) {
-	return classes.filter(Boolean).join(" ");
-}
-
+// Define navigation items and dynamically add 'Add Card' link
 export default function Deckview() {
-	return (
-		<>
-			{/* Centered Vertical Navigation */}
+  const { deckId, userId } = useParams(); // Get deckId and userId from the URL params
+  const [deckDetails, setDeckDetails] = useState(null); 
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
 
-			<div className="flex flex-col items-center min-h-screen space-y-4 mt-10">
-				<h1 className="text-5xl mt-7 mb-6 font-bold text-blue-950">
-					Deck Name
-				</h1>
-				{/* Description */}
-				<div className="text-black text-sm text-center h-20 w-9/12">
-					{/*" gdgsssssssssssd"*/}
-					{Array.from({ length: Math.floor(Math.random() * 100) + 5 })
-						.map(() => "word")
-						.join(" ") + "."}
-				</div>
+  // Function to fetch deck details
+  useEffect(() => {
+    const fetchDeckDetails = async () => {
+      try {
+        const response = await fetch(`http://localhost:8000/users/${userId}/decks/${deckId}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch deck details");
+        }
+        const data = await response.json();
+        setDeckDetails(data.deck); // Set deck details
+      } catch (err) {
+        setError(err.message); // Set error message if request fails
+      } finally {
+        setLoading(false); // Stop loading
+      }
+    };
 
-				{navigation.map((item) => (
-					<a
-						key={item.name}
-						href={item.href}
-						aria-current={item.current ? "page" : undefined}
-						className={classNames(
-							item.current
-								? "bg-gray-900 text-white"
-								: "text-black font-semibold hover:bg-blue-950 hover:text-white",
-							"rounded-3xl px-4 py-3 text-sm font-medium bg-white shadow-md w-40 flex items-center justify-center"
-						)}
-					>
-						<span className="inline-flex items-center">
-							<item.icon className="h-5 w-5 mr-2" aria-hidden="true" />
-							{item.name}
-						</span>
-					</a>
-				))}
-			</div>
-		</>
-	);
+    fetchDeckDetails(); 
+  }, [deckId, userId]); 
+
+  if (loading) {
+    return <div className="text-center mt-10">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center mt-10 text-red-500">{error}</div>;
+  }
+
+
+  const navigation = [
+    {
+      name: "Add Card",
+      href: `/users/${userId}/decks/${deckId}/cards`, 
+      icon: PlusCircleIcon,
+    },
+    { name: "Share", href: "#", icon: ShareIcon },
+    { name: "Edit", href: `/users/${userId}/decks/${deckId}/cards/cardlist`, icon: PencilSquareIcon },
+    { name: "Review", href: "/review", icon: RectangleStackIcon },
+    { name: "Quiz", href: "/quiz", icon: BookOpenIcon },
+  ];
+
+  // Utility function for class names
+  function classNames(...classes) {
+    return classes.filter(Boolean).join(" ");
+  }
+
+  return (
+    <div className="flex flex-col items-center min-h-screen space-y-4 mt-10">
+      <h1 className="text-5xl mt-7 mb-6 font-bold text-blue-950">
+        {deckDetails?.title || "Deck Name"}
+      </h1>
+      {/* Description */}
+      <div className="text-black text-sm text-center h-20 w-9/12">
+        {deckDetails?.description || "No description available."}
+      </div>
+
+      {/* Navigation Links */}
+      {navigation.map((item) => (
+        <Link
+          key={item.name}
+          to={item.href} // Use 'Link' component for navigation
+          className={classNames(
+            item.current
+              ? "bg-gray-900 text-white"
+              : "text-black font-semibold hover:bg-blue-950 hover:text-white",
+            "rounded-3xl px-4 py-3 text-sm font-medium bg-white shadow-md w-40 flex items-center justify-center"
+          )}
+        >
+          <span className="inline-flex items-center">
+            <item.icon className="h-5 w-5 mr-2" aria-hidden="true" />
+            {item.name}
+          </span>
+        </Link>
+      ))}
+    </div>
+  );
 }

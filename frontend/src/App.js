@@ -25,10 +25,10 @@ function App() {
 						<Route path="/" element={<Home />} />
 						<Route path="/home" element={<Home />} />
 						<Route path="/browse" element={<Browse />} />
-						<Route path="/addcard" element={<AddCard />} />
+						<Route path="/users/:userId/decks/:deckId/cards" element={<AddCard />} />
 						{""}
-						<Route path="/deckview" element={<Deckview />} />
-						<Route path="/cardlist" element={<Cardlist />} />
+						<Route path="/users/:userId/decks/:deckId" element={<Deckview />} />
+						<Route path="/users/:userId/decks/:deckId/cards/cardlist" element={<Cardlist />} />
 						<Route path="/users/:userId/decks/adddeck" element={<AddDeck />} />
 						<Route path="/review" element={<Review />} />
 						<Route path="/quiz" element={<Quiz />} />

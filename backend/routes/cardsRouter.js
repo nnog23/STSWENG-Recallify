@@ -3,19 +3,22 @@ const Card = require("../models/Card.js");
 
 const cardsRouter = Router();
 
-cardsRouter.post("/cards", async (req, res) => {
+cardsRouter.post("/users/:userId/decks/:deckId/cards", async (req, res) => {
 	console.log("Received request to add card");
 
 	// const { cardId, deckId, front, back } = req.body;
 
+	const { deckId } = req.params;
+
 	const { front, back } = req.body;
 
+	console.log(deckId);
 	console.log(req.body);
 
-	deckId = 1;
+	
 
 	try {
-		const newCard = new Card({ deckId, front, back });
+		const newCard = new Card({deckId, front, back });
 		const savedCard = await newCard.save();
 		res
 			.status(201)
@@ -46,28 +49,25 @@ cardsRouter.delete("/cards/:cardid", async (req, res) => {
 	}
 });
 
-cardsRouter.put("/cards/:cardid", async (req, res) => {
+cardsRouter.put("/users/:userId/decks/:deckId/cards/:cardId", async (req, res) => {
 	const { cardId } = req.params;
 	const updateData = req.body;
-
+	
 	try {
-		const updatedCard = await Card.findOneAndUpdate({ cardId }, updateData, {
+		// Use _id as the query key, assuming you're using MongoDB's default _id field
+		const updatedCard = await Card.findOneAndUpdate({ _id: cardId }, updateData, {
 			new: true,
 		});
 		if (!updatedCard) {
 			return res.status(404).json({ error: "Card not found." });
 		}
-		res
-			.status(200)
-			.json({ message: "Card updated successfully.", card: updatedCard });
+		res.status(200).json({ message: "Card updated successfully.", card: updatedCard });
 	} catch (err) {
-		res
-			.status(400)
-			.json({ error: "Failed to update card.", details: err.message });
+		res.status(400).json({ error: "Failed to update card.", details: err.message });
 	}
 });
 
-cardsRouter.get("/cards", async (req, res) => {
+cardsRouter.get("/users/:userId/decks/:deckId/cards/cardlist", async (req, res) => {
 	try {
 		const cards = await Card.find(); // Fetch all cards
 		res.status(200).json({ cards });

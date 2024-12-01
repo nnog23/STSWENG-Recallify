@@ -87,5 +87,28 @@ decksRouter.get('/users/:userId/decks/decklist', async (req, res) => {
     }
 });
 
+decksRouter.get('/users/:userId/decks/:deckId', async (req, res) => {
+    
+    console.log(req.params);
+    const { userId, deckId } = req.params;
+
+    try {
+        console.log(`Fetching deck for userId: ${userId}, deckId: ${deckId}`);
+
+        // Query to find the specific deck by userId and deckId
+        const deck = await Deck.findOne({ userId, _id: deckId });
+
+        if (!deck) {
+            return res.status(404).json({ message: 'Deck not found.' });
+        }
+
+        console.log(deck);
+        res.status(200).json({ message: 'Deck retrieved successfully.', deck });
+    } catch (err) {
+        console.error('Error retrieving deck:', err);
+        res.status(500).json({ error: 'Failed to fetch the deck.', details: err.message });
+    }
+});
+
 
 module.exports = decksRouter;
