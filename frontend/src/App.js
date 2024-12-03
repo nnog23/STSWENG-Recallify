@@ -43,8 +43,8 @@ function App() {
 							element={<Review />}
 						/>
 						<Route
-							path="/users/:userId/decks/:deckId/cards/quizcards"
-							element={<Quiz />}
+							path="/users/:userId/decks/:deckId/cards/practicecards"
+							element={<Practice />}
 						/>
 						<Route path="/users/:userId/profile" element={<Profile2 />} />
 						<Route path="/users/:userId/decks/decklist" element={<Home2 />} />

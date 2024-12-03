@@ -111,87 +111,20 @@ const Cardtable = () => {
 
 			const data = await response.json();
 
-          <div
-            className={`overflow-x-auto ${
-              isSidebarOpen ? "w-12/12 mx-5" : "w-10/12"
-            }`}
-          >
-            <table className="min-w-full w-full table-fixed border-collapse border border-gray-300">
-              <thead>
-                <tr className="bg-gray-100 text-gray-700">
-                  <th className="w-2/6 px-4 py-2 border-r border-b">Front</th>
-                  <th className="w-2/6 px-4 py-2 border-r border-b">Back</th>
-                  <th className="w-1/6 px-4 py-2 border-r border-b">Next Review Date</th>
-                  <th className="w-1/6 px-4 py-2 border-b">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {cards.length > 0 ? (
-                  cards.map((card) => (
-                    <tr key={card._id} className="bg-white">
-                      <td className="w-2/5 px-4 py-2 border-r border-b truncate">
-                        {card.front}
-                      </td>
-                      <td className="w-2/5 px-4 py-2 border-r border-b truncate">
-                        {card.back}
-                      </td>
-                      <td className="w-1/5 px-4 py-2 border-r border-b">
-                        {new Date(card.nextReviewDate).toLocaleDateString()}
-                      </td>
-                      <td className="w-1/5 px-4 py-2 border-b">
-                        <div
-                          className={`flex items-center ${
-                            isSidebarOpen
-                              ? "gap-x-2 justify-center"
-                              : "justify-between flex-nowrap space-x-1"
-                          }`}
-                        >
-                          <button
-                            onClick={() => handleEdit(card)}
-                            className="text-gray-700 hover:bg-blue-950 hover:text-white rounded-3xl px-3 py-2 text-sm font-medium bg-white shadow-md flex items-center justify-center"
-                          >
-                            <PencilSquareIcon
-                              className="h-5 w-5 mr-2"
-                              aria-hidden="true"
-                            />
-                            {isSidebarOpen ? "" : "Edit"}
-                          </button>
-                          <button
-                            onClick={() => openPreview(card)}
-                            className="text-black hover:bg-blue-950 hover:text-white rounded-3xl px-3 py-2 text-sm font-medium bg-white shadow-md flex items-center justify-center"
-                          >
-                            <EyeIcon
-                              className="h-5 w-5"
-                              aria-hidden="true"
-                            />
-                            {isSidebarOpen ? "" : ""}
-                          </button>
-                          <button
-                            onClick={() => handleDelete(card)}
-                            className="text-gray-700 hover:bg-blue-950 hover:text-white rounded-3xl px-3 py-2 text-sm font-medium bg-white shadow-md flex items-center justify-center"
-                          >
-                            <TrashIcon
-                              className="h-5 w-5"
-                              aria-hidden="true"
-                            />
-                            {isSidebarOpen ? "" : ""}
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="4" className="px-4 py-2 text-center">
-                      No cards available
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+			if (response.status === 200) {
+				setCards((prevCards) =>
+					prevCards.map((card) =>
+						card._id === selectedCard._id ? { ...card, front, back } : card
+					)
+				);
+				closeSidebar();
+			} else {
+				console.error("Failed to update card:", data.error || data.details);
+			}
+		} catch (err) {
+			console.error("Error updating card:", err);
+		}
+	};
 
 	const handleBackClick = () => {
 		navigate(`/users/${userId}/decks/${deckId}`); // Adjust this path to your deck view route

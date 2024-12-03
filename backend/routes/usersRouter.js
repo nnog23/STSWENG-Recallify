@@ -131,4 +131,36 @@ usersRouter.get('/users/:userId/profile', verifyToken, async (req, res) => {
     }
 });
 
+
+usersRouter.put('/users/:userId/bio', async (req, res) => {
+    const { userId } = req.params; // Get user ID from route params
+    const { bio } = req.body; // Get new bio from request body
+
+    if (!bio || typeof bio !== 'string' || bio.trim() === '') {
+        return res.status(400).json({ error: 'Invalid bio provided' });
+    }
+
+    try {
+        // Update the bio for the user with the specified ID
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { bio }, // Update the bio field
+            { new: true } // Return the updated user document
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.status(200).json({
+            message: 'Bio updated successfully',
+            bio: updatedUser.bio,
+        });
+    } catch (err) {
+        console.error('Error updating user bio:', err);
+        res.status(500).json({ error: 'Server error while updating bio' });
+    }
+});
+
+
 module.exports = usersRouter;

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { XMarkIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 
-export default function Profile() {
+export default function Profile2() {
 	const [user, setUser] = useState(null); // For storing user profile data
 	const [decks, setDecks] = useState([]); // For storing user's decks
 	const [username, setUsername] = useState(null);
@@ -36,28 +36,50 @@ export default function Profile() {
 		};
 
 		// Fetch user's decks data
-		const fetchUserDecks = async () => {
+		const fetchDecks = async () => {
 			try {
-				const response = await fetch(
-					`http://localhost:8000/users/${userId}/decks/decklist`
-				);
-				const data = await response.json();
-				setDecks(data.decks); // Set decks data to state
+			  const response = await fetch(`http://localhost:8000/users/${userId}/decks/decklist`);
+			  if (!response.ok) {
+				throw new Error("Failed to fetch decks");
+			  }
+			  const data = await response.json();
+			  
+			  // Fetch the number of due cards for each deck
+			  const updatedDecks = await Promise.all(
+				data.decks.map(async (deck) => {
+				  try {
+					const dueResponse = await fetch(
+					  `http://localhost:8000/users/${userId}/decks/${deck._id}/cards/due`
+					);
+					if (!dueResponse.ok) {
+					  throw new Error(`Failed to fetch due cards for deck ${deck._id}`);
+					}
+					const dueData = await dueResponse.json();
+					console.log(dueData.numberofcards);
+					return { ...deck, dueCards: dueData.numberofcards || 0 };
+					
+				  } catch (error) {
+					console.error("Error fetching due cards:", error);
+					return { ...deck, dueCards: 0 }; // Default to 0 if fetching fails
+				  }
+				})
+			  );
+	  
+			  setDecks(updatedDecks);
 			} catch (error) {
-				console.error("Error fetching user decks:", error);
+			  console.error("Error fetching decks:", error);
 			}
-		};
-
-		fetchUserProfile();
-		fetchUserDecks();
-	}, [userId]);
+		  };
+		  fetchUserProfile();
+		  fetchDecks();
+		}, [userId]);
 
 	const handleEdit = (bio) => {
 		if (isSidebarOpen) {
-			setIsSidebarOpen(false); // If sidebar is open, close it
+			setIsSidebarOpen(false);
 		} else {
-			setBio(bio); // Update bio if sidebar is opening
-			setIsSidebarOpen(true); // Otherwise, open it
+			setBio(bio); 
+			setIsSidebarOpen(true); 
 		}
 	};
 
@@ -68,13 +90,31 @@ export default function Profile() {
 
 	// insert handle submit
 	const handleSubmit = async (e) => {
-		e.preventDefault();
-
+		e.preventDefault(); 
+	
 		try {
-			console.log("hey!");
-			// insert
+			console.log("Submitting updated bio...");
+	
+			const response = await fetch(`http://localhost:8000/users/${userId}/bio`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ bio }), // Send the new bio in the request body
+			});
+	
+			if (response.ok) {
+				const data = await response.json();
+				console.log('Bio updated successfully:', data);
+				alert('Bio updated successfully!');
+			} else {
+				const error = await response.json();
+				console.error('Error updating bio:', error.error);
+				alert(`Error: ${error.error}`);
+			}
 		} catch (err) {
-			console.error("Error updating card:", err);
+			console.error('Error sending update request:', err);
+			alert('An unexpected error occurred. Please try again.');
 		}
 	};
 
@@ -160,8 +200,8 @@ export default function Profile() {
 									className="relative bg-blue-500 p-4 rounded-2xl shadow-md grid grid-rows-subgrid row-span-4 border-8 border-blue-200 hover:scale-105 transition-transform"
 								>
 									{/* Overlapping Bubble Badge */}
-									<div className="absolute -top-3 -right-3 bg-yellow-300 text-white text-s font-bold py-1 px-2 rounded-full shadow-lg">
-										{index + 1}
+									<div className="absolute -top-3 -right-3 bg-orange-500 hover:bg-orange-600 text-white text-s font-bold py-1 px-2 rounded-full shadow-lg">
+										{deck.dueCards}
 									</div>
 
 									{/* Blue Box */}
@@ -221,7 +261,7 @@ export default function Profile() {
 									<textarea
 										rows="4"
 										value={bio}
-										// onChange={(e) => })}
+										onChange={(e) => setBio(e.target.value)}
 										className="w-full p-2 border rounded-lg"
 										placeholder={bio || "Edit your bio..."}
 									></textarea>

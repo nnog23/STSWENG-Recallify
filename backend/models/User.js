@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: '',
     },
+    profileUrl: {
+        type: String,
+        default: 'https://bluemoji.io/cdn-proxy/646218c67da47160c64a84d5/66b3eb826bc6e984281381bc_20.png'
+    }
 });
 
 const User = mongoose.model('User', userSchema);
