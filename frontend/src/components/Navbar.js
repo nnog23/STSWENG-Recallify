@@ -36,7 +36,7 @@ export default function Navbar() {
 		<Disclosure as="nav" className="bg-white shadow-md sticky top-0 z-50">
 			<div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
 				<div className="relative flex h-16 items-center justify-between">
-					{/* Mobile menu button */}
+					{/* Mobile menu button */} {/*test*/}
 					<div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
 						<DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
 							<span className="absolute -inset-0.5" />
@@ -51,7 +51,6 @@ export default function Navbar() {
 							/>
 						</DisclosureButton>
 					</div>
-
 					{/* Logo */}
 					<div className="flex w-[76px] items-center justify-start">
 						<div className="flex shrink-0 items-center">
@@ -65,7 +64,6 @@ export default function Navbar() {
 							</span>
 						</div>
 					</div>
-
 					{/* Centered Navigation */}
 					<div className="hidden sm:flex sm:flex-1 sm:justify-center">
 						<div className="flex space-x-10">
@@ -89,7 +87,6 @@ export default function Navbar() {
 							))}
 						</div>
 					</div>
-
 					{/* Notifications and Profile Dropdown */}
 					<div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:pr-0">
 						<button
