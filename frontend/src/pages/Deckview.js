@@ -6,6 +6,8 @@ import {
   PencilSquareIcon,
   BookOpenIcon,
   RectangleStackIcon,
+  TrashIcon,
+  ViewColumnsIcon,
 } from "@heroicons/react/24/outline";
 
 // Define navigation items and dynamically add 'Add Card' link
@@ -45,15 +47,12 @@ export default function Deckview() {
 
 
   const navigation = [
-    {
-      name: "Add Card",
-      href: `/users/${userId}/decks/${deckId}/cards`, 
-      icon: PlusCircleIcon,
-    },
-    { name: "Share", href: "#", icon: ShareIcon },
-    { name: "Edit", href: `/users/${userId}/decks/${deckId}/cards/cardlist`, icon: PencilSquareIcon },
-    { name: "Review", href: "/review", icon: RectangleStackIcon },
-    { name: "Quiz", href: "/quiz", icon: BookOpenIcon },
+    { name: "Add Card", href: `/users/${userId}/decks/${deckId}/cards`, icon: PlusCircleIcon },
+    { name: "Edit Deck", href: `/users/${userId}/decks/${deckId}/edit`, icon: PencilSquareIcon },
+    { name: "Card List", href: `/users/${userId}/decks/${deckId}/cards/cardlist`, icon: ViewColumnsIcon },
+    { name: "Review", href: `/users/${userId}/decks/${deckId}/cards/reviewcards`, icon: RectangleStackIcon },
+    { name: "Quiz", href: `/users/${userId}/decks/${deckId}/cards/quizcards`, icon: BookOpenIcon },
+    { name: "Delete", href: `/users/${userId}/decks/${deckId}/delete`, icon: TrashIcon },
   ];
 
   // Utility function for class names

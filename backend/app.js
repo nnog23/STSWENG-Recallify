@@ -3,7 +3,6 @@ const dotenv = require('dotenv');
 const router = require('./routes/indexRouter.js');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const session = require('express-session');  // Import express-session
 
 dotenv.config();  
 
@@ -17,15 +16,8 @@ app.use(express.json());
 // CORS configuration
 app.use(cors({
     origin: 'http://localhost:3000',  // Allow requests from localhost:3000
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS']  // Allow all common methods
-}));
-
-// Session middleware configuration
-app.use(session({
-    secret: process.env.SESSION_SECRET || 'your-secret-key',  // Use a secure secret key
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false, httpOnly: true, maxAge: 60000 }  // Session expires in 1 minute (for example)
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],  // Allow all common methods
+    credentials: true
 }));
 
 // Connect to MongoDB

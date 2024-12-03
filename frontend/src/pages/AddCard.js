@@ -13,7 +13,6 @@ const AddCard = () => {
   const { userId, deckId } = useParams(); // Get userId and deckId from the URL
   const navigate = useNavigate(); // Hook to programmatically navigate after form submission
 
-  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (name === "front") {
@@ -65,8 +64,21 @@ const AddCard = () => {
     }
   };
 
+  const handleBackClick = () => {
+    navigate(`/users/${userId}/decks/${deckId}`); // Adjust this path to your deck view route
+  };
+
   return (
     <div className="h-[91vh]">
+            {/* Back Button at the top-left */}
+            <div className="absolute top-100 left-50 m-6">
+        <button
+          onClick={handleBackClick}
+          className="bg-blue-500 text-white text-lg font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition"
+        >
+          Back to Deck
+        </button>
+      </div>
       <div className="flex flex-col items-center justify-center">
         <h1 className="text-4xl mt-7 mb-6 font-bold text-blue-950">Add Card</h1>
         <div className="w-9/12 flex flex-col items-center mb-7">
@@ -113,7 +125,7 @@ const AddCard = () => {
                 className="resize-none w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-
+            
             {/* Error message */}
             {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
 

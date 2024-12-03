@@ -21,6 +21,10 @@ const deckSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    cardcount: {
+        type: Number,
+        default: 0,
+    },
 });
 
 const Deck = mongoose.model('Deck', deckSchema);

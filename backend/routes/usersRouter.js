@@ -1,8 +1,10 @@
-const { Router } = require('express');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/User.js');
+const usersRouter = require('express').Router();
 
-const usersRouter = Router();
+// Secret key for JWT
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'; // It is recommended to use an environment variable
 
 // Signup Route
 usersRouter.post('/signup', async (req, res) => {
@@ -38,61 +40,84 @@ usersRouter.post('/login', async (req, res) => {
         // Check if user exists
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({ error: 'Invalid username or password' });
+            return res.status(400).json({ error: 'Invalid email or password' });
         }
 
         // Compare the password with the hashed password
         const isMatch = await bcrypt.compare(password, user.encryptedPassword);
         if (!isMatch) {
-            return res.status(400).json({ error: 'Invalid username or password' });
+            return res.status(400).json({ error: 'Invalid email or password' });
         }
-
-        // Store user information in session
-        req.session.user = { userId: user._id, username: user.username };  // Store user in session
-
-        // Send response with the userId
-        res.status(200).json({ message: 'Login successful', userId: user._id });
+        
+        // Generate JWT token
+        const token = jwt.sign(
+            { userId: user._id, username: user.username },
+            JWT_SECRET,
+            { expiresIn: '1h' } // Token will expire in 1 hour
+        );
+        
+        const userId = user._id;
+        
+        // Send response with the JWT token
+        res.status(200).json({ message: 'Login successful', token, userId});
     } catch (err) {
         console.error('Error during login:', err);
         res.status(500).json({ error: 'Server error during login' });
     }
 });
 
-// Logout Route
+// Logout Route (since JWT is stateless, no need for session destroy)
 usersRouter.get('/logout', (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            return res.status(500).json({ error: 'Failed to logout' });
-        }
-        res.status(200).json({ message: 'Logged out successfully' });
-    });
+    res.status(200).json({ message: 'Logged out successfully' });
 });
 
+// Middleware to verify JWT token
+const verifyToken = (req, res, next) => {
+    
+    console.log("Request Headers:", req.headers);
+    const token = req.headers['authorization']?.split(' ')[1]; // Extract the token from the Authorization header
+    
+    if (!token) {
+        return res.status(403).json({ error: 'Access denied' });
+    }
 
-usersRouter.get('/user/:userId/decks', async (req, res) => {
+    jwt.verify(token, JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(403).json({ error: 'Invalid or expired token' });
+        }
+        req.user = decoded; // Attach user data to the request
+        next();
+    });
+};
+
+
+usersRouter.get('/users/:userId/profile', verifyToken, async (req, res) => {
+
     const { userId } = req.params;
 
+    console.log(userId);
+    console.log(req.headers['authorization']);
     try {
-        // Find the user by their ID
+        // Fetch the user by their ID
         const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        // Fetch the user's decks, assuming the Deck model has a `userId` field
-        const decks = await Deck.find({ userId: user._id }); // This assumes you have a userId field in the Deck model
+        // Send the user data (username, email, profilePicture)
 
-        if (decks.length === 0) {
-            return res.status(404).json({ message: 'No decks found for this user' });
-        }
+        res.status(200).json({
+            id: user._id,
+            username: user.username,
+            email: user.email,
+            profilePicture: user.profilePicture || null,
+            bio: user.bio
+        });
 
-        // Send the decks in the response
-        res.status(200).json({ decks });
     } catch (err) {
-        console.error('Error fetching decks:', err);
-        res.status(500).json({ error: 'Server error while fetching decks' });
+        console.error('Error fetching user profile:', err);
+        res.status(500).json({ error: 'Server error while fetching user profile' });
     }
 });
 
 module.exports = usersRouter;
-

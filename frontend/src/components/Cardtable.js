@@ -3,8 +3,10 @@ import {
   PencilSquareIcon,
   EyeIcon,
   XMarkIcon,
+  TrashIcon,
 } from "@heroicons/react/24/outline";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+
 
 const Cardtable = () => {
   const [cards, setCards] = useState([]);
@@ -12,7 +14,7 @@ const Cardtable = () => {
   const [selectedCard, setSelectedCard] = useState(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
-
+  const navigate = useNavigate(); 
   const { userId, deckId } = useParams();
 
   useEffect(() => {
@@ -39,6 +41,31 @@ const Cardtable = () => {
   const handleEdit = (card) => {
     setSelectedCard(card);
     setIsSidebarOpen(true);
+  };
+
+  const handleDelete = async (card) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this card?");
+    if (!confirmDelete) return;
+  
+    try {
+      const response = await fetch(
+        `http://localhost:8000/users/${userId}/decks/${deckId}/cards/${card._id}/delete`,
+        {
+          method: "DELETE",
+        }
+      );
+  
+      const data = await response.json();
+  
+      if (response.status === 200) {
+        // Remove the card from the cards state
+        setCards((prevCards) => prevCards.filter((c) => c._id !== card._id));
+      } else {
+        console.error("Failed to delete card:", data.error || data.details);
+      }
+    } catch (err) {
+      console.error("Error deleting card:", err);
+    }
   };
 
   const closeSidebar = () => {
@@ -102,8 +129,21 @@ const Cardtable = () => {
     }
   };
 
+  const handleBackClick = () => {
+    navigate(`/users/${userId}/decks/${deckId}`); // Adjust this path to your deck view route
+  };
+
   return (
     <div className="flex w-full h-full">
+                  {/* Back Button at the top-left */}
+                  <div className="absolute top-100 left-50 m-6">
+        <button
+          onClick={handleBackClick}
+          className="bg-blue-500 text-white text-lg font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition"
+        >
+          Back to Deck
+        </button>
+      </div>
       {/* Main Content */}
       <div
         className={`transition-all duration-300 ${
@@ -163,10 +203,20 @@ const Cardtable = () => {
                             className="text-black hover:bg-blue-950 hover:text-white rounded-3xl px-3 py-2 text-sm font-medium bg-white shadow-md flex items-center justify-center"
                           >
                             <EyeIcon
-                              className="h-5 w-5 mr-2"
+                              className="h-5 w-5"
                               aria-hidden="true"
                             />
-                            {isSidebarOpen ? "" : "Preview"}
+                            {isSidebarOpen ? "" : ""}
+                          </button>
+                          <button
+                            onClick={() => handleDelete(card)}
+                            className="text-gray-700 hover:bg-blue-950 hover:text-white rounded-3xl px-3 py-2 text-sm font-medium bg-white shadow-md flex items-center justify-center"
+                          >
+                            <TrashIcon
+                              className="h-5 w-5"
+                              aria-hidden="true"
+                            />
+                            {isSidebarOpen ? "" : ""}
                           </button>
                         </div>
                       </td>

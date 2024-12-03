@@ -31,6 +31,7 @@ const cardSchema = new mongoose.Schema({
     },
     nextReviewDate: {
         type: Date,
+        default: Date.now,
     },
     createdAt: {
         type: Date,

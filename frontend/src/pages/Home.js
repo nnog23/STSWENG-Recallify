@@ -24,7 +24,7 @@ export default function Home() {
 
 						// Generate the repeated "Item" string
 						const itemText = Array(randomRepeatCount).fill("Item").join(" ");
-
+						
 						return (
 							<div
 								key={index}

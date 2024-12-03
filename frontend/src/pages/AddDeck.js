@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate} from "react-router-dom";
 
 const AddDeck = () => {
 	// State to track form input values
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
 	const [isPrivate, setIsPrivate] = useState(false);
-
+	const navigate = useNavigate();
 	const { userId } = useParams();
 
 	// Handle input changes
@@ -50,7 +50,7 @@ const AddDeck = () => {
 
 			if (response.status === 201) {
 				alert("Deck added successfully!");
-				window.location.reload(); // Reload the page to reflect changes
+				navigate(`/users/${userId}/decks/decklist`); // go back to decklist page
 			} else {
 				alert("Failed to add deck: " + (data.error || data.details));
 			}
