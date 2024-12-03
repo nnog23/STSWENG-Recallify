@@ -12,7 +12,9 @@ usersRouter.post('/signup', async (req, res) => {
 
     try {
         // Check if the username or email already exists
+        
         const existingUser = await User.findOne({ $or: [{ username }, { email }] });
+
         if (existingUser) {
             return res.status(400).json({ error: 'Username or email already exists' });
         }
@@ -24,8 +26,17 @@ usersRouter.post('/signup', async (req, res) => {
         const newUser = new User({ username, email, encryptedPassword: hashedPassword });
         await newUser.save();
 
+        const token = jwt.sign(
+            { userId: newUser._id, username: newUser.username },
+            JWT_SECRET,
+            { expiresIn: '1h' } // Token will expire in 1 hour
+        );
+        
+        const userId = newUser._id;
+
+
         // Send response
-        res.status(201).json({ message: 'User created successfully' });
+        res.status(201).json({ message: 'User created successfully', token, userId });
     } catch (err) {
         console.error('Error during signup:', err);
         res.status(500).json({ error: 'Server error during signup' });

@@ -102,15 +102,44 @@ cardsRouter.get("/users/:userId/decks/:deckId/cards/reviewcards", async (req, re
 	}
 });
 
+cardsRouter.get("/users/:userId/decks/:deckId/cards/due", async (req, res) => {
+
+	const { deckId } = req.params;
+	
+	const today = new Date();
+
+	try {
+		
+		const cards = await Card.find({ deckId: deckId,
+
+			nextReviewDate: { $lte: today}
+
+		 });
+		 
+		if (!cards.length) {
+			return res.status(404).json({ message: "No cards due today for this deck." });
+		}
+
+		console.log(cards);
+
+		const numberofcards = cards.length;
+
+		res.status(200).json({ numberofcards });
+	} catch (err) {
+		console.error("Error fetching cards:", err);
+		res.status(500).json({ error: "Failed to fetch cards.", details: err.message });
+	}
+});
+
 
 // add a route for srs (put)
 
 cardsRouter.put("/users/:userId/decks/:deckId/cards/:cardId/review", async (req, res) => {
 	  const { cardId } = req.params;
 	  const { rating } = req.body; // `rating` is 0 (fail) or 1 (pass)
-
+	  
 	  console.log(rating);
-
+	  
 	  // Validate rating
 	  if (![0, 1].includes(rating)) {
 		return res

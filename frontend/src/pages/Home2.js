@@ -5,7 +5,7 @@ import { PlusCircleIcon } from "@heroicons/react/24/outline";
 export default function Home() {
   const { userId } = useParams();
   const [decks, setDecks] = useState([]);
-
+  
   useEffect(() => {
     const fetchDecks = async () => {
       try {
@@ -14,7 +14,29 @@ export default function Home() {
           throw new Error("Failed to fetch decks");
         }
         const data = await response.json();
-        setDecks(data.decks);
+        
+        // Fetch the number of due cards for each deck
+        const updatedDecks = await Promise.all(
+          data.decks.map(async (deck) => {
+            try {
+              const dueResponse = await fetch(
+                `http://localhost:8000/users/${userId}/decks/${deck._id}/cards/due`
+              );
+              if (!dueResponse.ok) {
+                throw new Error(`Failed to fetch due cards for deck ${deck._id}`);
+              }
+              const dueData = await dueResponse.json();
+              console.log(dueData.numberofcards);
+              return { ...deck, dueCards: dueData.numberofcards || 0 };
+              
+            } catch (error) {
+              console.error("Error fetching due cards:", error);
+              return { ...deck, dueCards: 0 }; // Default to 0 if fetching fails
+            }
+          })
+        );
+
+        setDecks(updatedDecks);
       } catch (error) {
         console.error("Error fetching decks:", error);
       }
@@ -22,6 +44,7 @@ export default function Home() {
 
     fetchDecks();
   }, [userId]);
+
 
   return (
     <>
@@ -41,15 +64,15 @@ export default function Home() {
           {decks.length === 0 ? (
             <div>No decks available</div>
           ) : (
-            decks.map((deck, index) => (
+            decks.map((deck) => (
               <Link
-                key={deck._id} 
-                to={`/users/${userId}/decks/${deck._id}`} 
+                key={deck._id}
+                to={`/users/${userId}/decks/${deck._id}`}
                 className="relative bg-blue-500 p-4 rounded-2xl shadow-md grid grid-rows-subgrid row-span-4 border-8 border-blue-200 hover:scale-105 transition-transform"
               >
                 {/* Overlapping Bubble Badge */}
-                <div className="absolute -top-3 -right-3 bg-yellow-300 text-white text-s font-bold py-1 px-2 rounded-full shadow-lg">
-                  {index + 1}
+                <div className="absolute -top-3 -right-3 bg-orange-500 hover:bg-orange-600 text-white text-s font-bold py-1 px-2 rounded-full shadow-lg">
+                  {deck.dueCards}
                 </div>
 
                 {/* Blue Box */}

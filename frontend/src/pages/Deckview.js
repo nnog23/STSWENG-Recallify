@@ -51,7 +51,7 @@ export default function Deckview() {
     { name: "Edit Deck", href: `/users/${userId}/decks/${deckId}/edit`, icon: PencilSquareIcon },
     { name: "Card List", href: `/users/${userId}/decks/${deckId}/cards/cardlist`, icon: ViewColumnsIcon },
     { name: "Review", href: `/users/${userId}/decks/${deckId}/cards/reviewcards`, icon: RectangleStackIcon },
-    { name: "Quiz", href: `/users/${userId}/decks/${deckId}/cards/quizcards`, icon: BookOpenIcon },
+    { name: "Practice", href: `/users/${userId}/decks/${deckId}/cards/practicecards`, icon: BookOpenIcon },
     { name: "Delete", href: `/users/${userId}/decks/${deckId}/delete`, icon: TrashIcon },
   ];
 

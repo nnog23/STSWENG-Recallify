@@ -69,15 +69,24 @@ const Review = () => {
 		  body: JSON.stringify({ rating }),
 		}
 	  );
-	  
+  
 	  if (response.status === 200) {
 		console.log("Card reviewed successfully.");
-		// If the card is marked as "Pass", remove it from the cards state
+		
 		if (result === "Pass") {
+		  // Remove the card from the array if it is a Pass
 		  setCards((prevCards) =>
 			prevCards.filter((card) => card._id !== currentCard._id)
 		  );
 		  setCurrentCardIndex((prevIndex) => Math.max(prevIndex - 1, 0)); // Adjust index after removal
+		} else {
+		  // Move the failed card to the back of the array
+		  setCards((prevCards) => {
+			const updatedCards = [...prevCards];
+			const failedCard = updatedCards.splice(currentCardIndex, 1)[0];
+			updatedCards.push(failedCard);
+			return updatedCards;
+		  });
 		}
 	  } else {
 		console.error("Failed to update card review.");
@@ -88,8 +97,50 @@ const Review = () => {
   
 	setShowAnswer(false);
 	setCurrentCardIndex((prevIndex) =>
-	  prevIndex < cards.length - 1 ? prevIndex + 1 : prevIndex
+	  prevIndex < cards.length - 1 ? prevIndex + 1 : 0 // Reset index if at the end
 	);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!selectedCard) return;
+
+    const { front, back } = selectedCard;
+	const cardId = selectedCard._id;
+    try {
+      const response = await fetch(
+        `http://localhost:8000/users/${userId}/decks/${deckId}/cards/${cardId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            front,
+            back,
+          }),
+        }
+      );
+	  
+      const data = await response.json();
+
+      if (response.status === 200) {
+     
+        setCards((prevCards) =>
+          prevCards.map((card) =>
+            card._id === selectedCard._id
+              ? { ...card, front, back }
+              : card
+          )
+        );
+        closeSidebar();
+      } else {
+        console.error("Failed to update card:", data.error || data.details);
+      }
+    } catch (err) {
+      console.error("Error updating card:", err);
+    }
+	
   };
 
   const currentCard = cards[currentCardIndex];
@@ -195,7 +246,7 @@ const Review = () => {
             </button>
           </div>
           <div className="p-4">
-            <form>
+            <form className = "p-6" onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label
                   htmlFor="front"
@@ -231,15 +282,11 @@ const Review = () => {
                 />
               </div>
               <button
-                type="button"
-                onClick={() => {
-                  console.log("Save changes", selectedCard);
-                  closeSidebar();
-                }}
-                className="w-full bg-blue-500 hover:bg-blue-950 text-white py-2 rounded-lg mt-2 font-semibold"
-              >
-                Save Changes
-              </button>
+				type="submit"
+				className="w-full bg-blue-500 hover:bg-blue-950 text-white py-2 rounded-lg mt-2 font-semibold"
+				>
+				Save Changes
+				</button>
             </form>
           </div>
         </div>

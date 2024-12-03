@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { useParams, useNavigate } from "react-router-dom";
 
-const Quiz = () => {
+const Practice = () => {
   const [cards, setCards] = useState([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
@@ -14,7 +14,7 @@ const Quiz = () => {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/users/${userId}/decks/${deckId}/cards`);
+        const response = await fetch(`http://localhost:8000/users/${userId}/decks/${deckId}/cards/cardlist`);
         const data = await response.json();
 
         if (response.status === 200) {
@@ -45,24 +45,75 @@ const Quiz = () => {
   };
 
   const handleCardResult = (result) => {
-    // Since there is no need to update the card, we'll just move to the next card
-    setShowAnswer(false);
-    setCurrentCardIndex((prevIndex) =>
-      prevIndex < cards.length - 1 ? prevIndex + 1 : prevIndex
-    );
+    // Move to the next card, if not the last one
+    if (currentCardIndex < cards.length - 1) {
+      setShowAnswer(false);
+      setCurrentCardIndex(prevIndex => prevIndex + 1);
+    } else {
+      // Handle the case when we reach the last card
+      setShowAnswer(false);
+      setCurrentCardIndex(cards.length);  // Or set it to a value indicating the end of practice
+    }
   };
 
   const handleBackClick = () => {
     navigate(`/users/${userId}/decks/${deckId}`); // Adjust this path to your deck view route
   };
 
+  const handleReset = () => {
+    setCurrentCardIndex(0);  // Reset to the first card
+    setShowAnswer(false);    // Hide the answer
+  };
+
   const currentCard = cards[currentCardIndex];
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!selectedCard) return;
+
+    const { front, back } = selectedCard;
+	const cardId = selectedCard._id;
+    try {
+      const response = await fetch(
+        `http://localhost:8000/users/${userId}/decks/${deckId}/cards/${cardId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            front,
+            back,
+          }),
+        }
+      );
+	  
+      const data = await response.json();
+
+      if (response.status === 200) {
+     
+        setCards((prevCards) =>
+          prevCards.map((card) =>
+            card._id === selectedCard._id
+              ? { ...card, front, back }
+              : card
+          )
+        );
+        closeSidebar();
+      } else {
+        console.error("Failed to update card:", data.error || data.details);
+      }
+    } catch (err) {
+      console.error("Error updating card:", err);
+    }
+	
+  };
+
 
   return (
     <div className="h-[90vh]">
-		
-            {/* Back Button at the top-left */}
-            <div className="absolute top-100 left-50 z-50 m-6">
+      {/* Back Button at the top-left */}
+      <div className="absolute top-100 left-50 z-50 m-6">
         <button
           onClick={handleBackClick}
           className="bg-blue-500 text-white text-lg font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition"
@@ -70,10 +121,19 @@ const Quiz = () => {
           Back to Deck
         </button>
       </div>
+
       <div className="flex flex-col items-center w-full px-4 h-auto relative top-0">
         <h1 className="text-4xl mt-7 mb-6 font-bold text-blue-950">
-          Quiz Deck
+          Practice
         </h1>
+
+        <button
+          onClick={() => handleEdit(currentCard)}
+          className="absolute right-12 top-6 text-gray-700 hover:bg-blue-950 hover:text-white rounded-3xl px-3 py-2 text-sm font-medium bg-white shadow-md flex items-center justify-center"
+        >
+          <PencilSquareIcon className="h-5 w-5 mr-2" aria-hidden="true" />
+          Edit
+        </button>
 
         {currentCard ? (
           <div className="flex flex-col items-center w-[56rem]">
@@ -111,16 +171,10 @@ const Quiz = () => {
 
                 <div className="flex space-x-4 w-full">
                   <button
-                    onClick={() => handleCardResult("Fail")}
-                    className="w-full bg-slate-300 hover:bg-slate-400 shadow-sm text-black py-2 rounded-lg font-semibold"
-                  >
-                    Fail
-                  </button>
-                  <button
-                    onClick={() => handleCardResult("Pass")}
+                    onClick={() => handleCardResult("Next")}
                     className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-2 rounded-lg font-semibold"
                   >
-                    Pass
+                    Next
                   </button>
                 </div>
               </div>
@@ -128,7 +182,19 @@ const Quiz = () => {
           </div>
         ) : (
           <div className="text-center text-lg font-semibold text-gray-700">
-            No cards available to quiz.
+            No cards available to practice.
+          </div>
+        )}
+
+        {/* Reset Button */}
+        {currentCardIndex >= cards.length && (
+          <div className="mt-6">
+            <button
+              onClick={handleReset}
+              className="bg-orange-500 hover:bg-orange-600 text-white text-lg py-3 px-6 rounded-lg shadow-md font-semibold"
+            >
+              Restart Practice
+            </button>
           </div>
         )}
       </div>
@@ -145,7 +211,7 @@ const Quiz = () => {
             </button>
           </div>
           <div className="p-4">
-            <form>
+            <form className = "p-6" onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label
                   htmlFor="front"
@@ -181,14 +247,10 @@ const Quiz = () => {
                 />
               </div>
               <button
-                type="button"
-                onClick={() => {
-                  console.log("Save changes", selectedCard);
-                  closeSidebar();
-                }}
-                className="w-full bg-blue-500 hover:bg-blue-950 text-white py-2 rounded-lg mt-2 font-semibold"
+              type="submit"
+              className="w-full bg-blue-500 hover:bg-blue-950 text-white py-2 rounded-lg mt-2 font-semibold"
               >
-                Save Changes
+              Save Changes
               </button>
             </form>
           </div>
@@ -198,4 +260,4 @@ const Quiz = () => {
   );
 };
 
-export default Quiz;
+export default Practice;

@@ -163,7 +163,7 @@ const Cardtable = () => {
                 <tr className="bg-gray-100 text-gray-700">
                   <th className="w-2/6 px-4 py-2 border-r border-b">Front</th>
                   <th className="w-2/6 px-4 py-2 border-r border-b">Back</th>
-                  <th className="w-1/6 px-4 py-2 border-r border-b">Due Date</th>
+                  <th className="w-1/6 px-4 py-2 border-r border-b">Next Review Date</th>
                   <th className="w-1/6 px-4 py-2 border-b">Action</th>
                 </tr>
               </thead>
@@ -178,7 +178,7 @@ const Cardtable = () => {
                         {card.back}
                       </td>
                       <td className="w-1/5 px-4 py-2 border-r border-b">
-                        {new Date(card.dateCreated).toLocaleDateString()}
+                        {new Date(card.nextReviewDate).toLocaleDateString()}
                       </td>
                       <td className="w-1/5 px-4 py-2 border-b">
                         <div
