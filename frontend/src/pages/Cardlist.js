@@ -4,6 +4,8 @@ export default function Decklist() {
 	return (
 		<>
 			<div className="w-full">
+
+				
 				<Cardtable></Cardtable>
 			</div>
 		</>

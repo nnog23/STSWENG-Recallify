@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const cardSchema = new mongoose.Schema({
     deckId: {
-        type: Number,
+        type: String,
         required: true,
     },
     front: {
@@ -31,6 +31,7 @@ const cardSchema = new mongoose.Schema({
     },
     nextReviewDate: {
         type: Date,
+        default: Date.now,
     },
     createdAt: {
         type: Date,
