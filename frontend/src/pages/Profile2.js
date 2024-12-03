@@ -1,17 +1,31 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { XMarkIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
+import {
+	XMarkIcon,
+	PlusCircleIcon,
+	CameraIcon,
+} from "@heroicons/react/24/outline";
 
 export default function Profile2() {
 	const [user, setUser] = useState(null); // For storing user profile data
 	const [decks, setDecks] = useState([]); // For storing user's decks
 	const [username, setUsername] = useState(null);
-	const [profilePicture, setProfilePicture] = useState(null);
+	const [profileUrl, setProfilePicture] = useState(null);
 	const [bio, setBio] = useState(null);
 	const token = localStorage.getItem("authToken");
 	const { userId } = useParams();
 
+	const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false); // Emoji Picker State
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+	// Example emoji URLs
+	const emojiUrls = [
+		"https://bluemoji.io/cdn-proxy/646218c67da47160c64a84d5/66b3eb826bc6e984281381bc_20.png",
+		"https://bluemoji.io/cdn-proxy/646218c67da47160c64a84d5/64634197794219e8d0e684ae_20.png",
+		"https://bluemoji.io/cdn-proxy/646218c67da47160c64a84d5/646341926afc95b84af056a8_20.png",
+		"https://bluemoji.io/cdn-proxy/646218c67da47160c64a84d5/64634193e037bad6550f1ae0_20.png",
+		"https://bluemoji.io/cdn-proxy/646218c67da47160c64a84d5/6463419d22af13a00b17f1d9_20.png",
+	];
 
 	useEffect(() => {
 		// Fetch user profile data
@@ -28,7 +42,7 @@ export default function Profile2() {
 				const data = await response.json();
 
 				setUsername(data.username);
-				setProfilePicture(data.profilePicture);
+				setProfilePicture(data.profileUrl);
 				setBio(data.bio);
 			} catch (error) {
 				console.error("Error fetching user profile:", error);
@@ -73,6 +87,26 @@ export default function Profile2() {
 		  fetchUserProfile();
 		  fetchDecks();
 		}, [userId]);
+
+	// Function to handle profile picture selection
+	const handleProfilePictureUpdate = async (emojiUrl) => {
+		setProfilePicture(emojiUrl); // Update state locally
+		setIsEmojiPickerOpen(false); // Close picker
+
+		// Send the updated profile picture URL to the backend
+		try {
+			await fetch(`http://localhost:8000/users/${userId}/profile`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({ profileUrl: emojiUrl }),
+			});
+		} catch (error) {
+			console.error("Error updating profile picture:", error);
+		}
+	};
 
 	const handleEdit = (bio) => {
 		if (isSidebarOpen) {
@@ -134,14 +168,31 @@ export default function Profile2() {
 								<img
 									id="profile-picture"
 									className="rounded-full w-40 h-40 object-cover"
-									src={profilePicture || "https://via.placeholder.com/150"}
+									src={profileUrl || "https://via.placeholder.com/150"}
 									alt="Profile Picture"
 								/>
 								{/* Edit button for picture */}
-								<button className="absolute bottom-2 right-2 bg-blue-500 text-white p-2 rounded-full shadow-lg">
-									Edit
+								<button
+									onClick={() => setIsEmojiPickerOpen(!isEmojiPickerOpen)}
+									className="absolute bottom-2 right-2 bg-blue-500 text-white p-2 rounded-full shadow-lg"
+								>
+									<CameraIcon className="h-5 w-5" aria-hidden="true" />
 								</button>
 							</div>
+							{/* Emoji Picker */}
+							{isEmojiPickerOpen && (
+								<div className="absolute mt-4 bg-white shadow-lg p-4 rounded-lg flex flex-wrap gap-2">
+									{emojiUrls.map((url, index) => (
+										<img
+											key={index}
+											src={url}
+											alt={`Emoji ${index}`}
+											className="w-10 h-10 cursor-pointer hover:scale-110 transition-transform"
+											onClick={() => handleProfilePictureUpdate(url)}
+										/>
+									))}
+								</div>
+							)}
 							{/* Content */}
 							<div className="p-4">
 								{/* Name */}
