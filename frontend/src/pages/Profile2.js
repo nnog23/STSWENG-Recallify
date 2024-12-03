@@ -44,6 +44,7 @@ export default function Profile2() {
 				setUsername(data.username);
 				setProfilePicture(data.profileUrl);
 				setBio(data.bio);
+
 			} catch (error) {
 				console.error("Error fetching user profile:", error);
 			}
@@ -95,7 +96,7 @@ export default function Profile2() {
 
 		// Send the updated profile picture URL to the backend
 		try {
-			await fetch(`http://localhost:8000/users/${userId}/profile`, {
+			await fetch(`http://localhost:8000/users/${userId}/profile/picture`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
@@ -133,6 +134,7 @@ export default function Profile2() {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
 				},
 				body: JSON.stringify({ bio }), // Send the new bio in the request body
 			});

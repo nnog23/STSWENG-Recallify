@@ -1,13 +1,15 @@
 import React from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
-function classNames(...classes) {
-	return classes.filter(Boolean).join(" ");
-}
-
-export default function Searchbar() {
+export default function Searchbar({ value, onChange, onSearch }) {
 	return (
-		<form className="flex items-center max-w-lg mx-auto mt-5">
+		<form
+			className="flex items-center max-w-lg mx-auto mt-5"
+			onSubmit={(e) => {
+				e.preventDefault();
+				if (onSearch) onSearch(value);
+			}}
+		>
 			<label htmlFor="voice-search" className="sr-only">
 				Search
 			</label>
@@ -21,18 +23,15 @@ export default function Searchbar() {
 				<input
 					type="text"
 					id="voice-search"
-					className="bg-white shadow-sm border border-gray-300 text-gray-900 text-sm rounded-2xl focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 "
+					className="bg-white shadow-sm border border-gray-300 text-gray-900 text-sm rounded-2xl focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
 					placeholder="Search Decks"
-					required
+					value={value}
+					onChange={(e) => onChange(e.target.value)}
 				/>
-				<button
-					type="button"
-					className="absolute inset-y-0 end-0 flex items-center pe-3"
-				></button>
 			</div>
 			<button
 				type="submit"
-				className="inline-flex items-center py-2.5 px-3 ms-2 text-sm font-medium text-white bg-blue-500 rounded-lg border border-blue-700 hover:bg-blue-950 focus:ring-4 focus:outline-none focus:ring-blue-300 "
+				className="inline-flex items-center py-2.5 px-3 ms-2 text-sm font-medium text-white bg-blue-500 rounded-lg border border-blue-700 hover:bg-blue-950 focus:ring-4 focus:outline-none focus:ring-blue-300"
 			>
 				Search
 			</button>
