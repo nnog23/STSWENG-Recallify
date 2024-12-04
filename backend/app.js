@@ -10,42 +10,13 @@ const mongoURI = process.env.MONG_URI;
 
 const app = express();
 
-// CORS configuration
-const corsOptions = {
-    origin: 'https://stsweng-recallify.vercel.app',  // Your frontend URL
-    credentials: true,  // Allows credentials (cookies, HTTP auth, etc.)
-  };
-  
-  // Apply CORS middleware with the above options
-
-app.use(cors(corsOptions));
-
-app.options('*', cors(corsOptions));
-
-/*
-app.use((req, res, next) => {
-   // res.header('Access-Control-Allow-Origin', '*');  // Allow all origins
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');  // Allow these HTTP methods
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');  // Allow these headers
-    next();
-  });
-*/
-
-/*
 app.use(cors({
-    origin: 'https://stsweng-recallify.vercel.app',
+    origin: 'https://localhost:8000/',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],  // Allow all common methods
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
-*/
 
-app.use((req, res, next) => {
-    console.log('Headers:', req.headers);
-    console.log('Origin:', req.headers.origin);
-    console.log('Path:', req.path);
-    next();
-});
 
 // Middleware to parse JSON bodies
 app.use(express.json());

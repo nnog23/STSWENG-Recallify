@@ -20,7 +20,7 @@ const Cardtable = () => {
 		const fetchCards = async () => {
 			try {
 				const response = await fetch(
-					`https://stsweng-recallify-backend.vercel.app/users/${userId}/decks/${deckId}/cards/cardlist`
+					`https://localhost:8000/users/${userId}/decks/${deckId}/cards/cardlist`
 				);
 				const data = await response.json();
 
