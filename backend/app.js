@@ -10,14 +10,6 @@ const mongoURI = process.env.MONG_URI;
 
 const app = express();
 
-app.use(cors({
-    origin: 'https://localhost:8000/',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],  // Allow all common methods
-    credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
-
 // Middleware to parse JSON bodies
 app.use(express.json());
 
