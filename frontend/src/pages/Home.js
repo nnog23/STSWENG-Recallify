@@ -1,7 +1,18 @@
+import { Link } from "react-router-dom";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
+
 export default function Home() {
 	return (
 		<>
 			<div className="flex flex-col items-center justify-center min-h-screen">
+				{/* Add Button */}
+				<a
+					href="/adddeck"
+					className="absolute right-48 top-24 text-gray-700 hover:bg-blue-950 hover:text-white rounded-3xl px-3 py-2 text-sm font-medium bg-white shadow-md flex items-center justify-center"
+				>
+					<PlusCircleIcon className="h-5 w-5 mr-2" aria-hidden="true" />
+					Add Deck
+				</a>
 				<h1 className="text-4xl mt-7 mb-6 font-bold text-blue-950">Decks</h1>
 				<div className="w-9/12 grid grid-cols-4 grid-rows-[auto_1fr_auto_auto] gap-x-5 gap-y-5">
 					{Array.from({ length: 8 }).map((_, index) => {
@@ -59,8 +70,9 @@ export default function Home() {
 					})}
 				</div>
 			</div>
+
 			<div className=" h-60 flex flex-col items-center justify-center pt-10">
-				<div className="w-10/12 bg-yellow-200 h-40 rounded-tr-3xl rounded-tl-3xl flex items-center justify-center">
+				<div className="w-10/12 bg-yellow-400 h-40 rounded-tr-3xl rounded-tl-3xl flex items-center justify-center">
 					<p className="text-white text-3xl font-bold text-center">Heat Map</p>
 				</div>
 				<div className="bg-slate-100 w-10/12  h-40 flex items-center justify-center gap-10">

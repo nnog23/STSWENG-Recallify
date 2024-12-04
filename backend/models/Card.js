@@ -1,15 +1,8 @@
 const mongoose = require('mongoose');
 
 const cardSchema = new mongoose.Schema({
-    cardId: {
-        type: Number,
-        required: true,
-        unique: true,
-        min: 1000000000, // Ensure it's a 10-digit number
-        max: 9999999999,
-    },
     deckId: {
-        type: Number,
+        type: String,
         required: true,
     },
     front: {
@@ -38,6 +31,7 @@ const cardSchema = new mongoose.Schema({
     },
     nextReviewDate: {
         type: Date,
+        default: Date.now,
     },
     createdAt: {
         type: Date,

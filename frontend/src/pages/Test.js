@@ -10,7 +10,7 @@ export default function Home() {
 
 						// Generate a random number between 1 and 10 for repetition
 						const randomRepeatCount = Math.floor(Math.random() * 8) + 1;
-
+						
 						// Generate the repeated "Item" string
 						const itemText = Array(randomRepeatCount).fill("Item").join(" ");
 
