@@ -10,6 +10,13 @@ const mongoURI = process.env.MONG_URI;
 
 const app = express();
 
+app.use(cors({
+    origin: 'https://stsweng-recallify.onrender.com', // Allow your frontend's URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],  // Allow all methods
+    credentials: true,  // Allow cookies or authorization headers
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
+}));
+
 // Middleware to parse JSON bodies
 app.use(express.json());
 
