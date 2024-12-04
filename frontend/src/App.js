@@ -16,6 +16,10 @@ import Login from "./pages/Login";
 import Profile2 from "./pages/Profile2";
 import Home2 from "./pages/Home2";
 import EditDeck from "./pages/EditDeck";
+import BrowseDeckview from "./pages/BrowseDeckview";
+import BrowseDeckPractice from "./pages/BrowseDeckPractice";
+import BrowseDeckCards from "./pages/BrowseDeckCards";
+import DuplicateDeck from "./pages/DuplicateDeck";
 
 function App() {
 	return (
@@ -27,7 +31,7 @@ function App() {
 						<Route path="/" element={<Login />} />
 						<Route path="/login" element={<Login />} />
 						<Route path="/home" element={<Login />} />
-						<Route path="/browse" element={<Browse />} />
+						<Route path="/browse/:userId" element={<Browse />} />
 						<Route
 							path="/users/:userId/decks/:deckId/cards"
 							element={<AddCard />}
@@ -55,6 +59,22 @@ function App() {
 						<Route
 							path="/users/:userId/decks/:deckId/edit"
 							element={<EditDeck />}
+						/>
+						<Route
+							path="/decks/:deckId/deckview"
+							element={<BrowseDeckview />}
+						/>
+						<Route
+							path="/decks/:deckId/deckview/decks/:deckId/cards/practicecards"
+							element={<BrowseDeckPractice />}
+						/>
+						<Route
+							path="/decks/:deckId/deckview/decks/:deckId/cards/cardlist"
+							element={<BrowseDeckCards />}
+						/>
+						<Route
+							path="/users/:userId/decks/:deckId/editdeck"
+							element={<DuplicateDeck />}
 						/>
 					</Routes>
 				</div>

@@ -44,7 +44,6 @@ export default function Profile2() {
 				setUsername(data.username);
 				setProfilePicture(data.profileUrl);
 				setBio(data.bio);
-
 			} catch (error) {
 				console.error("Error fetching user profile:", error);
 			}
@@ -95,6 +94,7 @@ export default function Profile2() {
 		setIsEmojiPickerOpen(false); // Close picker
 
 		// Send the updated profile picture URL to the backend
+
 		try {
 			await fetch(`https://localhost:8000/users/${userId}/profile/picture`, {
 				method: "PUT",

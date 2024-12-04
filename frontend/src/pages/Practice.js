@@ -75,7 +75,7 @@ const Practice = () => {
 	const cardId = selectedCard._id;
     try {
       const response = await fetch(
-        `https://stsweng-recallify-backend.vercel.app/users/${userId}/decks/${deckId}/cards/${cardId}`,
+        `http://localhost:8000/users/${userId}/decks/${deckId}/cards/${cardId}`,
         {
           method: "PUT",
           headers: {
