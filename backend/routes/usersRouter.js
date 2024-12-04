@@ -40,6 +40,9 @@ usersRouter.post("/signup", async (req, res) => {
 
 // Login Route
 usersRouter.post("/login", async (req, res) => {
+
+    console.log('Headers for /login:', req.headers);
+    
 	const { email, password } = req.body;
 
 	try {
