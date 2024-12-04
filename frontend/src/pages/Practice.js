@@ -14,7 +14,7 @@ const Practice = () => {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/users/${userId}/decks/${deckId}/cards/cardlist`);
+        const response = await fetch(`https://stsweng-recallify-backend.vercel.app/users/${userId}/decks/${deckId}/cards/cardlist`);
         const data = await response.json();
 
         if (response.status === 200) {
@@ -75,7 +75,7 @@ const Practice = () => {
 	const cardId = selectedCard._id;
     try {
       const response = await fetch(
-        `http://localhost:8000/users/${userId}/decks/${deckId}/cards/${cardId}`,
+        `https://stsweng-recallify-backend.vercel.app/users/${userId}/decks/${deckId}/cards/${cardId}`,
         {
           method: "PUT",
           headers: {

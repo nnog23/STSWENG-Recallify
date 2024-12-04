@@ -9,7 +9,7 @@ export default function Home() {
   useEffect(() => {
     const fetchDecks = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/users/${userId}/decks/decklist`);
+        const response = await fetch(`https://stsweng-recallify-backend.vercel.app/users/${userId}/decks/decklist`);
         if (!response.ok) {
           throw new Error("Failed to fetch decks");
         }
@@ -20,7 +20,7 @@ export default function Home() {
           data.decks.map(async (deck) => {
             try {
               const dueResponse = await fetch(
-                `http://localhost:8000/users/${userId}/decks/${deck._id}/cards/due`
+                `https://stsweng-recallify-backend.vercel.app/users/${userId}/decks/${deck._id}/cards/due`
               );
               if (!dueResponse.ok) {
                 throw new Error(`Failed to fetch due cards for deck ${deck._id}`);

@@ -41,7 +41,7 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = isLogin ? "http://localhost:8000/login" : "http://localhost:8000/signup";  // Remove localhost when deployed
+    const url = isLogin ? "https://stsweng-recallify-backend.vercel.app/login" : "https://stsweng-recallify-backend.vercel.app/signup";  // Remove localhost when deployed
     const payload = isLogin
       ? { email: formData.email, password: formData.password }
       : { username: formData.username, email: formData.email, password: formData.password };
