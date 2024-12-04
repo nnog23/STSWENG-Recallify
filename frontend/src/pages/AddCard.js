@@ -41,7 +41,7 @@ const AddCard = () => {
 
 			// Make POST request to add the card
 			const response = await fetch(
-				`https://stsweng-recallify-backend.vercel.app/users/${userId}/decks/${deckId}/cards`, // Dynamically use userId and deckId
+				`http://localhost:8000/users/${userId}/decks/${deckId}/cards`, // Dynamically use userId and deckId
 				{
 					method: "POST",
 					headers: {

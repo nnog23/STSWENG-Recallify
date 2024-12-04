@@ -100,12 +100,7 @@ export default function Deckview() {
 			href: `decks/${deckId}/cards/cardlist`,
 			icon: ViewColumnsIcon,
 		},
-		{
-			name: "Duplicate Deck",
-			// Remove href and add onClick to trigger duplication
-			onClick: duplicateDeck,
-			icon: RectangleStackIcon,
-		},
+
 		{
 			name: "Practice",
 			href: `decks/${deckId}/cards/practicecards`,

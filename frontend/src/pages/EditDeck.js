@@ -12,8 +12,8 @@ const EditDeck = () => {
   useEffect(() => {
     const fetchDeckDetails = async () => {
       try {
-        const response = await fetch(`https://stsweng-recallify-backend.vercel.app/users/${userId}/decks/${deckId}`);
 
+        const response = await fetch(`http://localhost:8000/users/${userId}/decks/${deckId}`);
         const data = await response.json();
 
         if (response.status === 200) {

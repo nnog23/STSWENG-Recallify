@@ -40,7 +40,7 @@ export default function Browse() {
 						}
 					})
 				);
-
+				
 				setDecks(updatedDecks);
 			} catch (error) {
 				console.error("Error fetching decks:", error);

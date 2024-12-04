@@ -20,7 +20,7 @@ const Cardtable = () => {
 		const fetchCards = async () => {
 			try {
 				const response = await fetch(
-					`https://stsweng-recallify-backend.vercel.app/users/${userId}/decks/${deckId}/cards/cardlist`
+					`http://localhost:8000/users/${userId}/decks/${deckId}/cards/cardlist`
 				);
 				const data = await response.json();
 
@@ -163,7 +163,7 @@ const Cardtable = () => {
 									<th className="w-2/6 px-4 py-2 border-r border-b">Front</th>
 									<th className="w-2/6 px-4 py-2 border-r border-b">Back</th>
 									<th className="w-1/6 px-4 py-2 border-r border-b">
-										Due Date
+										Next Review Date
 									</th>
 									<th className="w-1/6 px-4 py-2 border-b">Action</th>
 								</tr>
@@ -179,7 +179,7 @@ const Cardtable = () => {
 												{card.back}
 											</td>
 											<td className="w-1/5 px-4 py-2 border-r border-b">
-												{new Date(card.dateCreated).toLocaleDateString()}
+												{new Date(card.nextReviewDate).toLocaleDateString()}
 											</td>
 											<td className="w-1/5 px-4 py-2 border-b">
 												<div

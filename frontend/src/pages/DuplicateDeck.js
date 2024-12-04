@@ -7,7 +7,7 @@ const EditDeck = () => {
 	const [isPrivate, setIsPrivate] = useState(false);
 	const navigate = useNavigate();
 	const { userId, deckId } = useParams();
-
+	
 	// Fetch deck details to populate the form for editing
 	useEffect(() => {
 		const fetchDeckDetails = async () => {
