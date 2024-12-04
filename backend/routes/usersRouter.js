@@ -21,7 +21,7 @@ usersRouter.post("/signup", async (req, res) => {
 
 		// Hash the password
 		const hashedPassword = await bcrypt.hash(password, 10);
-
+        
 		// Create a new user
 		const newUser = new User({
 			username,
@@ -97,7 +97,7 @@ const verifyToken = (req, res, next) => {
 
 usersRouter.get("/users/:userId/profile", verifyToken, async (req, res) => {
 	const { userId } = req.params;
-    
+
 	console.log(userId);
 	console.log(req.headers["authorization"]);
 	try {
@@ -117,65 +117,6 @@ usersRouter.get("/users/:userId/profile", verifyToken, async (req, res) => {
 			bio: user.bio,
 			profileUrl: user.profileUrl,
 		});
-	} catch (err) {
-		console.error("Error fetching user profile:", err);
-		res.status(500).json({ error: "Server error while fetching user profile" });
-	}
-});
-
-usersRouter.put("/users/:userId/bio", verifyToken, async (req, res) => {
-
-	const { userId } = req.params;
-    const { bio } = req.body;
-
-	console.log(userId);
-	console.log(req.headers["authorization"]);
-
-	try {
-		// Fetch the user by their ID
- 
-		const user = await User.findByIdAndUpdate({_id: userId}, {bio}, {
-            new: true,
-        });
-
-		if (!user) {
-			return res.status(404).json({ error: "User not found" });
-		}
-
-		res.status(200).json({
-			bio: user.bio
-		});
-
-	} catch (err) {
-		console.error("Error fetching user profile:", err);
-		res.status(500).json({ error: "Server error while fetching user profile" });
-	}
-});
-
-
-usersRouter.put("/users/:userId/profile/picture", verifyToken, async (req, res) => {
-
-	const { userId } = req.params;
-    const { profileUrl } = req.body;
-
-	console.log(userId);
-	console.log(req.headers["authorization"]);
-
-	try {
-		// Fetch the user by their ID
- 
-		const user = await User.findByIdAndUpdate({_id: userId}, {profileUrl}, {
-            new: true,
-        });
-
-		if (!user) {
-			return res.status(404).json({ error: "User not found" });
-		}
-
-		res.status(200).json({
-			profileUrl: user.profileUrl
-		});
-
 	} catch (err) {
 		console.error("Error fetching user profile:", err);
 		res.status(500).json({ error: "Server error while fetching user profile" });

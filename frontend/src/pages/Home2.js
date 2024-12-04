@@ -20,7 +20,7 @@ export default function Home() {
           data.decks.map(async (deck) => {
             try {
               const dueResponse = await fetch(
-                `https://stsweng-recallify-backend.vercel.app/users/${userId}/decks/${deck._id}/cards/due`
+                `http://localhost:8000/users/${userId}/decks/${deck._id}/cards/due`
               );
               if (!dueResponse.ok) {
                 throw new Error(`Failed to fetch due cards for deck ${deck._id}`);
