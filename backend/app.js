@@ -12,14 +12,16 @@ const app = express();
 
 // CORS configuration
 
-/*
+
 app.use(cors({
     origin: 'https://stsweng-recallify.vercel.app',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],  // Allow all common methods
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
-*/
+
+app.options('*', cors(corsOptions));
+
 
 
 app.use((req, res, next) => {
