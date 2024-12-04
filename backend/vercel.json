@@ -8,8 +8,8 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",        
-      "dest": "https://stsweng-recallify-backend.vercel.app/api/$1" 
+      "src": "/(.*)",        
+      "dest": "app.js" 
     }
   ]
 }
