@@ -10,15 +10,16 @@ const mongoURI = process.env.MONG_URI;
 
 const app = express();
 
-// Middleware to parse JSON bodies
-app.use(express.json());
-
 // CORS configuration
 app.use(cors({
     origin: 'https://stsweng-recallify.vercel.app',  // Allow requests from localhost:3000
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],  // Allow all common methods
     credentials: true
 }));
+
+
+// Middleware to parse JSON bodies
+app.use(express.json());
 
 // Connect to MongoDB
 mongoose.connect(mongoURI, {
@@ -40,15 +41,6 @@ app.get('/', (req, res) => {
 
 // Use the router (for handling other routes)
 app.use(router);
-
-// Example of checking session data
-app.get('/dashboard', (req, res) => {
-    if (req.session.user && req.session.user.loggedIn) {
-        res.send(`Welcome, ${req.session.user.username}!`);
-    } else {
-        res.redirect('/login');  // Redirect to login if not authenticated
-    }
-});
 
 // 404 route for unhandled requests
 app.use((req, res) => {
