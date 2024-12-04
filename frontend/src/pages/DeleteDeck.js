@@ -12,7 +12,7 @@ const DeleteDeck = () => {
     useEffect(() => {
         const fetchDeck = async () => {
             try {
-                const response = await fetch(`https://localhost:8000/users/${userId}/decks/${deckId}`);
+                const response = await fetch(`https://stsweng-recallify-backend.onrender.com/users/${userId}/decks/${deckId}`);
                 const data = await response.json();
 
                 if (response.status === 200) {
@@ -44,7 +44,7 @@ const DeleteDeck = () => {
         }
 
         try {
-            const response = await fetch(`https://localhost:8000/users/${userId}/decks/${deckId}/delete`, {
+            const response = await fetch(`https://stsweng-recallify-backend.onrender.com/users/${userId}/decks/${deckId}/delete`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",

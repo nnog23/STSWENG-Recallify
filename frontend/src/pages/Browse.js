@@ -14,7 +14,7 @@ export default function Browse() {
 		const fetchDecks = async () => {
 			setLoading(true);
 			try {
-				const response = await fetch("http://localhost:8000/browse"); // Replace with your API endpoint
+				const response = await fetch("https://stsweng-recallify-backend.onrender.com/browse"); // Replace with your API endpoint
 				if (!response.ok) {
 					throw new Error("Failed to fetch public decks");
 				}
@@ -25,7 +25,7 @@ export default function Browse() {
 					data.map(async (deck) => {
 						try {
 							const dueResponse = await fetch(
-								`http://localhost:8000/decks/${deck._id}/cards/due`
+								`https://stsweng-recallify-backend.onrender.com/decks/${deck._id}/cards/due`
 							); // Adjust the endpoint based on your API
 							if (!dueResponse.ok) {
 								throw new Error(

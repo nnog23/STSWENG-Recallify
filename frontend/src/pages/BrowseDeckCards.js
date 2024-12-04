@@ -20,7 +20,7 @@ const Cardtable = () => {
 		const fetchCards = async () => {
 			try {
 				const response = await fetch(
-					`http://localhost:8000/decks/${deckId}/cards/cardlist`
+					`https://stsweng-recallify-backend.onrender.com/decks/${deckId}/cards/cardlist`
 				);
 				const data = await response.json();
 

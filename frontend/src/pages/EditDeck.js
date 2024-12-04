@@ -13,7 +13,7 @@ const EditDeck = () => {
     const fetchDeckDetails = async () => {
       try {
 
-        const response = await fetch(`https://localhost:8000/users/${userId}/decks/${deckId}`);
+        const response = await fetch(`https://stsweng-recallify-backend.onrender.com/users/${userId}/decks/${deckId}`);
         const data = await response.json();
 
         if (response.status === 200) {
@@ -61,7 +61,7 @@ const EditDeck = () => {
     };
 
     try {
-      const response = await fetch(`https://localhost:8000/users/${userId}/decks/${deckId}/editdeck`, {
+      const response = await fetch(`https://stsweng-recallify-backend.onrender.com/users/${userId}/decks/${deckId}/editdeck`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

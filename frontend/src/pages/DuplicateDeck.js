@@ -13,7 +13,7 @@ const EditDeck = () => {
 		const fetchDeckDetails = async () => {
 			try {
 				const response = await fetch(
-					`http://localhost:8000/users/${userId}/decks/${deckId}`
+					`https://stsweng-recallify-backend.onrender.com/users/${userId}/decks/${deckId}`
 				);
 
 				const data = await response.json();
@@ -66,7 +66,7 @@ const EditDeck = () => {
 
 		try {
 			const response = await fetch(
-				`http://localhost:8000/users/${userId}/decks/${deckId}/editdeck`,
+				`https://stsweng-recallify-backend.onrender.com/users/${userId}/decks/${deckId}/editdeck`,
 				{
 					method: "PUT",
 					headers: {

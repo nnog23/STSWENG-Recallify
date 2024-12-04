@@ -41,7 +41,7 @@ const AddCard = () => {
 
 			// Make POST request to add the card
 			const response = await fetch(
-				`https://localhost:8000/users/${userId}/decks/${deckId}/cards`, // Dynamically use userId and deckId
+				`https://stsweng-recallify-backend.onrender.com/users/${userId}/decks/${deckId}/cards`, // Dynamically use userId and deckId
 				{
 					method: "POST",
 					headers: {

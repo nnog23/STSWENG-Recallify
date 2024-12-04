@@ -32,7 +32,7 @@ export default function Profile2() {
 		const fetchUserProfile = async () => {
 			try {
 				const response = await fetch(
-					`https://localhost:8000/users/${userId}/profile`,
+					`https://stsweng-recallify-backend.onrender.com/users/${userId}/profile`,
 					{
 						headers: {
 							Authorization: `Bearer ${token}`, // Replace with your JWT token
@@ -52,7 +52,7 @@ export default function Profile2() {
 		// Fetch user's decks data
 		const fetchDecks = async () => {
 			try {
-			  const response = await fetch(`https://localhost:8000/users/${userId}/decks/decklist`);
+			  const response = await fetch(`https://stsweng-recallify-backend.onrender.com/users/${userId}/decks/decklist`);
 			  if (!response.ok) {
 				throw new Error("Failed to fetch decks");
 			  }
@@ -63,7 +63,7 @@ export default function Profile2() {
 				data.decks.map(async (deck) => {
 				  try {
 					const dueResponse = await fetch(
-					  `https://localhost:8000/users/${userId}/decks/${deck._id}/cards/due`
+					  `https://stsweng-recallify-backend.onrender.com/users/${userId}/decks/${deck._id}/cards/due`
 					);
 					if (!dueResponse.ok) {
 					  throw new Error(`Failed to fetch due cards for deck ${deck._id}`);
@@ -96,7 +96,7 @@ export default function Profile2() {
 		// Send the updated profile picture URL to the backend
 
 		try {
-			await fetch(`https://localhost:8000/users/${userId}/profile/picture`, {
+			await fetch(`https://stsweng-recallify-backend.onrender.com/users/${userId}/profile/picture`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
@@ -130,7 +130,7 @@ export default function Profile2() {
 		try {
 			console.log("Submitting updated bio...");
 	
-			const response = await fetch(`https://localhost:8000/users/${userId}/bio`, {
+			const response = await fetch(`https://stsweng-recallify-backend.onrender.com/users/${userId}/bio`, {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',

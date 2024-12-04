@@ -25,7 +25,7 @@ export default function Deckview() {
 	useEffect(() => {
 		const fetchDeckDetails = async () => {
 			try {
-				const response = await fetch(`http://localhost:8000/decks/${deckId}`);
+				const response = await fetch(`https://stsweng-recallify-backend.onrender.com/decks/${deckId}`);
 				if (!response.ok) {
 					throw new Error("Failed to fetch deck details");
 				}
@@ -71,7 +71,7 @@ export default function Deckview() {
 		console.log("clicked!");
 		try {
 			const response = await fetch(
-				`http://localhost:8000/users/${userId}/decks/${deckId}/duplicate`,
+				`https://stsweng-recallify-backend.onrender.com/users/${userId}/decks/${deckId}/duplicate`,
 				{
 					method: "POST",
 				}

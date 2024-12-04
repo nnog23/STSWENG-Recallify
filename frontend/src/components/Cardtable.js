@@ -20,7 +20,7 @@ const Cardtable = () => {
 		const fetchCards = async () => {
 			try {
 				const response = await fetch(
-					`https://localhost:8000/users/${userId}/decks/${deckId}/cards/cardlist`
+					`https://stsweng-recallify-backend.onrender.com/users/${userId}/decks/${deckId}/cards/cardlist`
 				);
 				const data = await response.json();
 
@@ -50,7 +50,7 @@ const Cardtable = () => {
 
 		try {
 			const response = await fetch(
-				`http://localhost:8000/users/${userId}/decks/${deckId}/cards/${card._id}/delete`,
+				`https://stsweng-recallify-backend.onrender.com/users/${userId}/decks/${deckId}/cards/${card._id}/delete`,
 				{
 					method: "DELETE",
 				}
@@ -96,7 +96,7 @@ const Cardtable = () => {
 		const cardId = selectedCard._id;
 		try {
 			const response = await fetch(
-				`http://localhost:8000/users/${userId}/decks/${deckId}/cards/${cardId}`,
+				`https://stsweng-recallify-backend.onrender.com/users/${userId}/decks/${deckId}/cards/${cardId}`,
 				{
 					method: "PUT",
 					headers: {

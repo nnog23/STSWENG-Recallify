@@ -38,7 +38,7 @@ const AddDeck = () => {
 		};
 
 		try {
-			const response = await fetch("https://localhost:8000/users/:userId/decks/adddeck", {
+			const response = await fetch("https://stsweng-recallify-backend.onrender.com/users/:userId/decks/adddeck", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
