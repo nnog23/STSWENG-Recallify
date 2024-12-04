@@ -15,7 +15,7 @@ app.use(express.json());
 
 // CORS configuration
 app.use(cors({
-    origin: 'http://localhost:3000',  // Allow requests from localhost:3000
+    origin: 'https://stsweng-recallify.vercel.app',  // Allow requests from localhost:3000
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],  // Allow all common methods
     credentials: true
 }));
