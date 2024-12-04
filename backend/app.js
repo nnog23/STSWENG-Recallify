@@ -23,7 +23,6 @@ app.use(cors({
 app.options('*', cors(corsOptions));
 
 
-
 app.use((req, res, next) => {
     console.log('Headers:', req.headers);
     console.log('Origin:', req.headers.origin);
