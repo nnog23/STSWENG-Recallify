@@ -240,13 +240,15 @@ cardsRouter.post("/users/:userId/decks/:deckId/duplicate", async (req, res) => {
 			return res.status(404).json({ message: "Deck not found" });
 		}
 
-		console.log(originalDeck.toObject());
-		
 		// Clone the deck by creating a new object and setting a new ID and owner
 		const duplicatedDeck = new Deck({
-			...originalDeck.toObject(),
-			userId: userId, // Set the new owner (current user)
+
 			_id: new mongoose.Types.ObjectId(), // Generate a new ID
+			userId: userId, // Set the new owner (current user)
+			title: originalDeck.title,
+			description: originalDeck.description,
+			private: originalDeck.private
+
 		});
 		
 		// Save the duplicated deck
