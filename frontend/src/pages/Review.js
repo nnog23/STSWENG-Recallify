@@ -55,8 +55,8 @@ const Review = () => {
   };
 
   const handleCardResult = async (result) => {
-    const rating = result === "Pass" ? 1 : 0;
     const currentCard = cards[currentCardIndex];
+    const rating = result === "Pass" ? 1 : 0;
   
     try {
       const response = await fetch(
@@ -74,32 +74,28 @@ const Review = () => {
         console.log("Card reviewed successfully.");
   
         setCards((prevCards) => {
-          const updatedCards = [...prevCards];
           if (result === "Pass") {
-            // Remove the card if it is a Pass
-            updatedCards.splice(currentCardIndex, 1);
+            // Remove the passed card and adjust the index accordingly
+            const updatedCards = prevCards.filter((card, index) => index !== currentCardIndex);
+            // Adjust index if the last card is removed
+            setCurrentCardIndex((prevIndex) => Math.min(prevIndex, updatedCards.length - 1));
+            return updatedCards;
           } else {
-            // Move the failed card to the back of the array
+            // Move the failed card to the back
+            const updatedCards = [...prevCards];
             const failedCard = updatedCards.splice(currentCardIndex, 1)[0];
             updatedCards.push(failedCard);
+            return updatedCards;
           }
-          return updatedCards;
         });
   
-        // Adjust currentCardIndex to stay within bounds
-        setCurrentCardIndex((prevIndex) =>
-          result === "Pass"
-            ? Math.min(prevIndex, cards.length - 2) // Adjust index after removal
-            : Math.min(prevIndex, cards.length - 1) // Ensure it's within bounds
-        );
+        setShowAnswer(false); // Reset the answer visibility
       } else {
         console.error("Failed to update card review.");
       }
     } catch (err) {
       console.error("Error updating card review:", err);
     }
-  
-    setShowAnswer(false);
   };
 
   const handleSubmit = async (e) => {
