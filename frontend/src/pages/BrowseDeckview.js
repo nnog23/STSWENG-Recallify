@@ -87,7 +87,7 @@ export default function Deckview() {
 				alert("Deck duplicated successfully!");
 				// Redirect to the new deck's edit page with the new deckId
 				navigate(
-					`/users/${deckDetails.userId}/decks/${data.newDeckId}/editdeck`
+					`/users/${data.deck.userId}/decks/${data.deck._id}/editdeck`
 				);
 			} else {
 				alert("Failed to duplicate deck: " + (data.error || data.details));
