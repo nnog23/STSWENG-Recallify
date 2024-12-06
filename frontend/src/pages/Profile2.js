@@ -252,6 +252,14 @@ export default function Profile2() {
 									to={`/users/${userId}/decks/${deck._id}`}
 									className="relative bg-blue-500 p-4 rounded-2xl shadow-md grid grid-rows-subgrid row-span-4 border-8 border-blue-200 hover:scale-105 transition-transform"
 								>
+									{/* Lock Icon - Bottom Left */}
+									<div className="absolute bottom-2 left-2">
+									{deck.private ? (
+										<LockClosedIcon className="h-6 w-6 text-gray-700" aria-hidden="true" />
+									) : (
+										<LockOpenIcon className="h-6 w-6 text-gray-700" aria-hidden="true" />
+									)}
+									</div>
 									{/* Overlapping Bubble Badge */}
 									<div className="absolute -top-3 -right-3 bg-orange-500 hover:bg-orange-600 text-white text-s font-bold py-1 px-2 rounded-full shadow-lg">
 										{deck.dueCards}
