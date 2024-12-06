@@ -76,7 +76,6 @@ export default function Deckview() {
 					method: "POST",
 					headers: {
 						'Content-Type': 'application/json',
-						Authorization: `Bearer ${token}`,
 					},
 				}
 			);
