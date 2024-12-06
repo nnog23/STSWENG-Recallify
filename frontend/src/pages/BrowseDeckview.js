@@ -74,6 +74,10 @@ export default function Deckview() {
 				`https://stsweng-recallify-backend.onrender.com/users/${userId}/decks/${deckId}/duplicate`,
 				{
 					method: "POST",
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
 				}
 			);
 

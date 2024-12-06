@@ -2,7 +2,6 @@ const { Router } = require("express");
 const mongoose = require("mongoose");
 
 const Deck = require("../models/Deck.js");
-const Card = require("../models/Card.js");
 
 const decksRouter = Router();
 
@@ -178,50 +177,6 @@ decksRouter.get("/decks/:deckId", async (req, res) => {
 
 // Route to duplicate a deck
 
-decksRouter.post("/users/:userId/decks/:deckId/duplicate", async (req, res) => {
-	const { deckId } = req.params;
-	const { userId } = req.params; // Assuming the userId is provided in the request body
-
-	try {
-		// Find the original deck by ID
-		const originalDeck = await Deck.findById(deckId);
-		if (!originalDeck) {
-			return res.status(404).json({ message: "Deck not found" });
-		}
-
-		// Clone the deck by creating a new object and setting a new ID and owner
-		const duplicatedDeck = new Deck({
-			...originalDeck.toObject(),
-			owner: userId, // Set the new owner (current user)
-			_id: new mongoose.Types.ObjectId(), // Generate a new ID
-		});
-
-		// Save the duplicated deck
-		await duplicatedDeck.save();
-
-		// Optionally, duplicate all the cards associated with this deck
-		const cards = await Card.find({ deckId });
-		if (cards.length > 0) {
-			const duplicatedCards = cards.map((card) => {
-				return new Card({
-					...card.toObject(),
-					deckId: duplicatedDeck._id, // Set the new deck ID
-				});
-			});
-			console.log(duplicatedCards);
-			await Card.insertMany(duplicatedCards);
-		}
-
-		return res
-			.status(201)
-			.json({ message: "Deck duplicated successfully", deck: duplicatedDeck });
-	} catch (error) {
-		console.error("Error duplicating deck:", error);
-		return res
-			.status(500)
-			.json({ message: "Internal server error", error: error.message });
-	}
-});
 
 // decksRouter.post("/users/:userId/decks/:deckId/duplicate", async (req, res) => {
 // 	try {
