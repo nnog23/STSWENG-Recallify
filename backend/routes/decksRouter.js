@@ -217,7 +217,7 @@ decksRouter.post("/users/:userId/decks/:deckId/duplicate", async (req, res) => {
 		}
 
 		return res
-			.status(201)
+			.status(200)
 			.json({ message: "Deck duplicated successfully", deck: duplicatedDeck });
 	} catch (error) {
 		console.error("Error duplicating deck:", error);
