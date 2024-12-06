@@ -256,12 +256,12 @@ cardsRouter.post("/users/:userId/decks/:deckId/duplicate", async (req, res) => {
 
 		// Optionally, duplicate all the cards associated with this deck
 		const cards = await Card.find({ deckId });
-
+		
 		if (cards.length > 0) {
 			const duplicatedCards = cards.map((card) => {
-				const { _id, ...cardData } = card.toObject();
 				return new Card({
-					...cardData,
+					front: card.front,
+					back: card.back,
 					_id: new mongoose.Types.ObjectId(),
 					deckId: duplicatedDeck._id, // Set the new deck ID
 				});
