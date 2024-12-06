@@ -4,6 +4,7 @@ import {
 	XMarkIcon,
 	PlusCircleIcon,
 	CameraIcon,
+	LockClosedIcon, LockOpenIcon
 } from "@heroicons/react/24/outline";
 
 export default function Profile2() {
