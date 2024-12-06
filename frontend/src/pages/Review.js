@@ -55,50 +55,51 @@ const Review = () => {
   };
 
   const handleCardResult = async (result) => {
-	const rating = result === "Pass" ? 1 : 0;
-	const currentCard = cards[currentCardIndex];
+    const rating = result === "Pass" ? 1 : 0;
+    const currentCard = cards[currentCardIndex];
   
-	try {
-	  const response = await fetch(
-		`https://stsweng-recallify-backend.onrender.com/users/${userId}/decks/${deckId}/cards/${currentCard._id}/review`,
-		{
-		  method: "PUT",
-		  headers: {
-			"Content-Type": "application/json",
-		  },
-		  body: JSON.stringify({ rating }),
-		}
-	  );
+    try {
+      const response = await fetch(
+        `https://stsweng-recallify-backend.onrender.com/users/${userId}/decks/${deckId}/cards/${currentCard._id}/review`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ rating }),
+        }
+      );
   
-	  if (response.status === 200) {
-		console.log("Card reviewed successfully.");
-		
-		if (result === "Pass") {
-		  // Remove the card from the array if it is a Pass
-		  setCards((prevCards) =>
-			prevCards.filter((card) => card._id !== currentCard._id)
-		  );
-		  setCurrentCardIndex((prevIndex) => Math.max(prevIndex - 1, 0)); // Adjust index after removal
-		} else {
-		  // Move the failed card to the back of the array
-		  setCards((prevCards) => {
-			const updatedCards = [...prevCards];
-			const failedCard = updatedCards.splice(currentCardIndex, 1)[0];
-			updatedCards.push(failedCard);
-			return updatedCards;
-		  });
-		}
-	  } else {
-		console.error("Failed to update card review.");
-	  }
-	} catch (err) {
-	  console.error("Error updating card review:", err);
-	}
+      if (response.status === 200) {
+        console.log("Card reviewed successfully.");
   
-	setShowAnswer(false);
-	setCurrentCardIndex((prevIndex) =>
-	  prevIndex < cards.length - 1 ? prevIndex + 1 : 0 // Reset index if at the end
-	);
+        setCards((prevCards) => {
+          const updatedCards = [...prevCards];
+          if (result === "Pass") {
+            // Remove the card if it is a Pass
+            updatedCards.splice(currentCardIndex, 1);
+          } else {
+            // Move the failed card to the back of the array
+            const failedCard = updatedCards.splice(currentCardIndex, 1)[0];
+            updatedCards.push(failedCard);
+          }
+          return updatedCards;
+        });
+  
+        // Adjust currentCardIndex to stay within bounds
+        setCurrentCardIndex((prevIndex) =>
+          result === "Pass"
+            ? Math.min(prevIndex, cards.length - 2) // Adjust index after removal
+            : Math.min(prevIndex, cards.length - 1) // Ensure it's within bounds
+        );
+      } else {
+        console.error("Failed to update card review.");
+      }
+    } catch (err) {
+      console.error("Error updating card review:", err);
+    }
+  
+    setShowAnswer(false);
   };
 
   const handleSubmit = async (e) => {
