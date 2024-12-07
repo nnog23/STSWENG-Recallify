@@ -79,7 +79,7 @@ export default function Browse() {
 							>
 								{/* Overlapping Bubble Badge */}
 								<div className="absolute -top-3 -right-3 bg-orange-500 hover:bg-orange-600 text-white text-s font-bold py-1 px-2 rounded-full shadow-lg">
-									{"X"}
+									{deck.dueCards}
 								</div>
 
 								{/* Blue Box */}

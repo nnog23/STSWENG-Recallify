@@ -81,7 +81,7 @@ export default function Deckview() {
 			);
 
 			const data = await response.json();
-
+			
 			if (response.status === 200) {
 				alert("Deck duplicated successfully!");
 				// Redirect to the new deck's edit page with the new deckId

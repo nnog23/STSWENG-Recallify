@@ -140,9 +140,10 @@ cardsRouter.get("/users/:userId/decks/:deckId/cards/due", async (req, res) => {
 		});
 
 		if (!cards.length) {
+
 			return res
-				.status(404)
-				.json({ message: "No cards due today for this deck." });
+				.status(200)
+				.json({ message: "No cards due today for this deck.", numberofcards: 0 });
 		}
 
 		console.log(cards);
